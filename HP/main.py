@@ -19,7 +19,15 @@ while run:
     keys = pygame.key.get_pressed() #stores in keys all keys that are pressed
 
     """Key Presses"""
-    EventsFile.Get
+    if keys[pygame.K_LEFT]:
+        x -= vel
+    if keys[pygame.K_RIGHT]:
+        x += vel
+    if keys[pygame.K_UP]:
+        y -= vel
+    if keys[pygame.K_DOWN]:
+        y += vel
+    
 
 
     """Listening to the events """
