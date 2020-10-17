@@ -1,3 +1,0 @@
-def GameQuit():
-    return False
-

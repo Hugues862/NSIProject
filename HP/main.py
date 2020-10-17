@@ -1,34 +1,27 @@
 import pygame
-import EventsFile
+import classes.EventsFile as EventsFile
+import classes.players as players
+import classes.platform as platform
 pygame.init()
+pygame.font.init()
+clock = pygame.time.Clock()
 
-win = pygame.display.set_mode((500,500))
+win = pygame.display.set_mode((800,800))
+myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 
-x = 50
-y = 50
-width = 50
-height = 50
-vel = 5
+Users = []
+Plateforms = []
+
+Users.append(players.Player(win,500,500, (10,10))) #creates a new player
+Plateforms.append(platform.Platform(win,100,600,600,70)) #creates a new plateform 
 
 #Event Listener
 run = True
 while run:
-    pygame.time.delay(30) # Clock for the game in ms
 
-    keys = pygame.key.get_pressed() #stores in keys all keys that are pressed
 
-    """Key Presses"""
-    if keys[pygame.K_LEFT]:
-        x -= vel
-    if keys[pygame.K_RIGHT]:
-        x += vel
-    if keys[pygame.K_UP]:
-        y -= vel
-    if keys[pygame.K_DOWN]:
-        y += vel
-    
-
+    win.fill((0,0,0)) #clears screen every frame
 
     """Listening to the events """
     for event in pygame.event.get(): #Get all events
@@ -37,20 +30,27 @@ while run:
         if event.type == pygame.QUIT: #QUIT event
             run = EventsFile.GameQuit() #returns False
 
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RIGHT:
+                Users[0].m_right = True
+            if event.key == pygame.K_LEFT:
+                Users[0].m_left = True
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_RIGHT:
+                Users[0].m_right = False
+            if event.key == pygame.K_LEFT:
+                Users[0].m_left = False
+ 
+    Users[0].update(Plateforms)
+    Plateforms[0].draw()
     
-
     
-
-
-
-    win.fill((0,0,0))
-    pygame.draw.rect(win, (255, 0 , 0), (x, y, width, height))
+    
+    textsurface = myfont.render(str(str(Users[0].rect.x)+" : "+str(Users[0].rect.y)), False, (0, 255, 0))
+    win.blit(textsurface,(250,250))
     
     
     pygame.display.update() #update game display, essential to refresh every frame
-
+    clock.tick(60)
 pygame.quit()
-
-
-
 
