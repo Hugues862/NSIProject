@@ -1,8 +1,9 @@
 import pygame
 
-class Platform():
+class Platform(pygame.sprite.Sprite):
 
     def __init__(self,win,x,y,width,height):
+        pygame.sprite.Sprite.__init__(self)
         self.rect = pygame.Rect(x,y,width,height)
         self.color = (0,255,0)
         self.win = win
