@@ -18,18 +18,12 @@ class Player(pygame.sprite.Sprite):
         self.isJump = False
         self.on_platform = False 
 
-        
+   
     def update(self,Platforms):
         self.globalmove()
+    
+        self.movex()
         
-        if self.boundaries("x"):
-            self.movex()
-        else:
-            self.momentum[0] = -self.momentum[0]
-        
-        for each_platform in Platforms:
-            self.platform_collide(each_platform)
-
         if self.boundaries("y"):
             if self.on_platform == False:
                 self.gravity()
@@ -37,8 +31,34 @@ class Player(pygame.sprite.Sprite):
             self.momentum[1] = 0
             if self.rect.y < 0:
                 self.rect.y = 0
-        
-        
+
+        """ block_hit_list = pygame.sprite.spritecollide(self, Platforms, False)
+        for block in block_hit_list:
+            
+            # If we are moving right,
+            # set our right side to the left side of the item we hit
+            if self.momentum[0] > 0:
+                self.rect.right = block.rect.left
+            elif self.momentum[0] < 0:
+                # Otherwise if we are moving left, do the opposite.
+                self.rect.left = block.rect.right
+  """
+        # Check and see if we hit anything
+        block_hit_list = pygame.sprite.spritecollide(self, Platforms, False)
+        for block in block_hit_list:
+            
+            # Reset our position based on the top/bottom of the object.
+            if self.momentum[1] > 0:
+                self.rect.bottom = block.rect.top
+            elif self.momentum[1] < 0:
+                self.rect.top = block.rect.bottom
+            # Stop our vertical movement
+            self.momentum[1] = 0
+
+        if pygame.sprite.spritecollide(self, Platforms, False):
+            self.on_platform = True
+        else:
+            self.on_platform = False
         self.draw()
     
     def globalmove(self):
@@ -46,7 +66,7 @@ class Player(pygame.sprite.Sprite):
         self.momentum[1] = round(self.momentum[1],3)
         self.rect.x += self.momentum[0]
         self.rect.y += self.momentum[1]
-        """ print(self.momentum) """
+        print(self.momentum)
         
         if not self.momentum[0] == 0:
             if self.momentum[0] < 1 and self.momentum[0] > 0:
@@ -75,40 +95,13 @@ class Player(pygame.sprite.Sprite):
             self.momentum[1] -= 20
             self.isJump = False
 
-    def platform_collide(self,platform):
-        val = "collision"
-        if platform.rect.right < self.rect.left:
-            # platform.rect est à gauche
-            val = "gauche"
-        if platform.rect.bottom < self.rect.top:
-            # platform.rect est au-dessus
-            val = "dessu"
-        if platform.rect.left > self.rect.right:
-            # platform.rect est à droite
-            val = "droite"
-        if platform.rect.top < self.rect.bottom:
-            # platform.rect est en-dessous
-            val = "dessou"
-        # Dans tous les autres cas il y a collision
-       
-                
-        self.on_platform = False
-        print(val)
-        """ PlatformCollision = pygame.sprite.spritecollide(self, platlist, False) 
-        if PlatformCollision:
-            self.on_platform = True
-            if self.momentum[1] >0:
-                self.momentum[1] = 0
-
-        else:
-            self.on_platform = False  """       
-
+    
     def boundaries(self,axis):
         if axis == "x":
-            if self.rect.x >= 0 and self.rect.x <= self.screen_width-self.rect.width:
+            if self.rect.left >= 0 and self.rect.right <= self.screen_width:
                 return True
         elif axis == "y":
-            if self.rect.y >= 0 and self.rect.y <= self.screen_height-self.rect.height:
+            if self.rect.top >= 0 and self.rect.bottom <= self.screen_height:
                 return True
         else:
             return False 
@@ -119,10 +112,20 @@ class Player(pygame.sprite.Sprite):
         self.momentum[1] += 1
 
     def movex(self):
-        if self.m_right:
-            self.momentum[0] += self.spx
-        if self.m_left:
-            self.momentum[0] -= self.spx
+        if self.boundaries("x"):
+            if self.m_right:
+                self.momentum[0] += self.spx
+            if self.m_left:
+                self.momentum[0] -= self.spx
+        else:
+            self.momentum[0] = 0
+
+        #check player x border
+        if self.rect.right > self.screen_width:
+            self.rect.right = self.screen_width
+        if self.rect.left < 0:
+            self.rect.left = 0
+
 
     def draw(self):
         pygame.draw.rect(self.win, self.color, self.rect)
