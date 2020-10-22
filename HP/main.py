@@ -2,6 +2,8 @@ import pygame
 import classes.EventsFile as EventsFile
 import classes.players as players
 import classes.platform as platform
+import stages as stages
+
 pygame.init()
 pygame.font.init()
 clock = pygame.time.Clock()
@@ -11,11 +13,10 @@ myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 
 Users = []
-Platforms = []
+Stages = stages.initStages(win)
 
 
 Users.append(players.Player(win,500,500, (1,1))) # Creates a new player
-Platforms.append(platform.hardPlatform(win,100,600,600,50))
 
 #Event Listener
 run = True
@@ -51,8 +52,9 @@ while run:
                 Users[0].m_left = False
     
 
-    Users[0].update(Platforms)
-    Platforms[0].draw()
+    Users[0].update(Stages[0])
+    for i in range (len(Stages[0])):
+        Stages[0][i].draw()
     
     textsurface = myfont.render(str(str(Users[0].rect.x)+" : "+str(Users[0].rect.y)), False, (0, 255, 0))
     win.blit(textsurface,(250,250))
