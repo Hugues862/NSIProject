@@ -8,7 +8,7 @@ pygame.init()
 pygame.font.init()
 clock = pygame.time.Clock()
 
-win = pygame.display.set_mode((800,800))
+win = pygame.display.set_mode((1200,800))
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 
