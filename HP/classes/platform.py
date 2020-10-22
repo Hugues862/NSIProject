@@ -1,6 +1,6 @@
 import pygame
 
-class passPlatform(pygame.sprite.Sprite):
+class softPlatform(pygame.sprite.Sprite):
 
     def __init__(self,win,x,y,width,height):
         pygame.sprite.Sprite.__init__(self)
