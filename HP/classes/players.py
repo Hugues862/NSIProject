@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite):
         #game variables
         self.gravity_multiplier = 1.5
         self.jump_momentum = 25
-        self.GlobalMomentumMultiplier = 0.95
+        self.GlobalMomentumMultiplier = 0.90
         self.GlobalMomentumExtremums = [1,-1]
 
         self.win = win
@@ -93,6 +93,7 @@ class Player(pygame.sprite.Sprite):
         
         if self.momentum[0] < self.GlobalMomentumExtremums[0] and self.momentum[0] > self.GlobalMomentumExtremums[1]:
             self.momentum[0] = 0
+
         if self.momentum[1] < self.GlobalMomentumExtremums[0] and self.momentum[1] > self.GlobalMomentumExtremums[1]:
             self.momentum[1] = 0
 
@@ -119,7 +120,7 @@ class Player(pygame.sprite.Sprite):
             else: 
                 self.momentum[1]*= 0.95 """
     
-    def jump(self):
+    def jump(self): # Adds to Vertical Momentum
         if self.isJump == False:
             self.isJump = True
             self.momentum[1] -= self.jump_momentum
@@ -139,12 +140,14 @@ class Player(pygame.sprite.Sprite):
         if self.on_platform == False:
             self.momentum[1] += self.gravity_multiplier
 
-    def movex(self):
+    def movex(self): # Adds to Horizontal Momentum
         if self.boundaries("x"):
             if self.m_right:
-                self.momentum[0] += self.spx
+                if self.momentum[0] <= 10:
+                    self.momentum[0] += self.spx
             if self.m_left:
-                self.momentum[0] += -self.spx
+                if self.momentum[0] >= -10:
+                    self.momentum[0] += -self.spx
         else:
             self.momentum[0] = 0
         
