@@ -42,17 +42,23 @@ class Player(pygame.sprite.Sprite):
         - y axis collision only
         """
         # Check and see if we hit anything
+
         block_hit_list = pygame.sprite.spritecollide(self, Platforms, False)
         for block in block_hit_list:
+
             # Reset our position based on the top/bottom of the object.
+
             if self.momentum[1] > 0:
                 self.rect.bottom = block.rect.top
             elif self.momentum[1] < 0:
                 self.rect.top = block.rect.bottom
+
             # Stop our vertical movement
+
             self.momentum[1] = 0
 
         #if collison occurs, on_platform = True, else = False
+        
         if pygame.sprite.spritecollide(self, Platforms, False):
             self.on_platform = True
         else:
