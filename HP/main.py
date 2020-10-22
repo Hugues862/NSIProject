@@ -15,7 +15,7 @@ DEBUG = True
 """TEMP VARIABLES"""
 
 
-win = pygame.display.set_mode((1200,800))
+win = pygame.display.set_mode((1536,864))
 myfont = pygame.font.SysFont('Comic Sans MS', 20)
 
 
@@ -34,7 +34,6 @@ def debug_overlay(Player,fps):
     win.blit(fps,(10,5))
     win.blit(pos,(10,25))
     win.blit(momentum,(10,45))
-    win.blit(test, (100,10))
 
 
 run = True
