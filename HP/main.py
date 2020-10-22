@@ -13,11 +13,10 @@ myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 
 Users = []
-Users.append(players.Player(win,500,500, (1,1))) # Creates a new player
+Users.append(players.Player(win,500,500, (1.5,1.5))) # Creates a new player
 Stages = stages.initStages(win)
 
-CamX = 0
-CamY = 0
+
 
 
 #Event Listener
@@ -55,7 +54,7 @@ while run:
     
 
     Users[0].update(Stages[0])
-    Users[0].draw((CamX,CamY))
+    Users[0].draw()
     for i in range (len(Stages[0])):
         Stages[0][i].draw()
     
