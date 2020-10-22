@@ -27,7 +27,8 @@ class Player(pygame.sprite.Sprite):
         else:
             self.momentum[0] = -self.momentum[0]
         
-        self.platform_collide(Platforms)
+        for each_platform in Platforms:
+            self.platform_collide(each_platform)
 
         if self.boundaries("y"):
             if self.on_platform == False:
@@ -45,7 +46,7 @@ class Player(pygame.sprite.Sprite):
         self.momentum[1] = round(self.momentum[1],3)
         self.rect.x += self.momentum[0]
         self.rect.y += self.momentum[1]
-        print(self.momentum)
+        """ print(self.momentum) """
         
         if not self.momentum[0] == 0:
             if self.momentum[0] < 1 and self.momentum[0] > 0:
@@ -74,15 +75,33 @@ class Player(pygame.sprite.Sprite):
             self.momentum[1] -= 20
             self.isJump = False
 
-    def platform_collide(self,platlist):
-        PlatformCollision = pygame.sprite.spritecollide(self, platlist, False) 
+    def platform_collide(self,platform):
+        val = "collision"
+        if platform.rect.right < self.rect.left:
+            # platform.rect est à gauche
+            val = "gauche"
+        if platform.rect.bottom < self.rect.top:
+            # platform.rect est au-dessus
+            val = "dessu"
+        if platform.rect.left > self.rect.right:
+            # platform.rect est à droite
+            val = "droite"
+        if platform.rect.top < self.rect.bottom:
+            # platform.rect est en-dessous
+            val = "dessou"
+        # Dans tous les autres cas il y a collision
+       
+                
+        self.on_platform = False
+        print(val)
+        """ PlatformCollision = pygame.sprite.spritecollide(self, platlist, False) 
         if PlatformCollision:
             self.on_platform = True
             if self.momentum[1] >0:
                 self.momentum[1] = 0
 
         else:
-            self.on_platform = False        
+            self.on_platform = False  """       
 
     def boundaries(self,axis):
         if axis == "x":
