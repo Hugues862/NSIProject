@@ -1,4 +1,4 @@
-import pygame
+import pygame, pprint 
 import classes.EventsFile as EventsFile
 import classes.players as players
 import classes.platform as platform
@@ -8,15 +8,35 @@ pygame.init()
 pygame.font.init()
 clock = pygame.time.Clock()
 
+"""GLOBAL VARIABLES"""
+DEBUG = True
+
+
+"""TEMP VARIABLES"""
+
+
 win = pygame.display.set_mode((1200,800))
-myfont = pygame.font.SysFont('Comic Sans MS', 30)
+myfont = pygame.font.SysFont('Comic Sans MS', 20)
 
 
 Player = players.Player(win,500,500, (1.5,1.5)) # Creates a new player
 Stages = stages.initStages(win)
 
+def debug_overlay(Player,fps):
+    fps_text = str(fps) + "fps" 
+    pos_text ="Pos(" + str(Player.rect.x) + ":" + str(Player.rect.y)+")"
+    momentum_text ="Momentum: "+str(Player.momentum) 
+    
+    fps = myfont.render(fps_text, False, (255, 0, 0))
+    pos = myfont.render(pos_text, False, (255, 0, 0))
+    momentum = myfont.render(momentum_text, False, (255, 0, 0))
 
-#Event Listener
+    win.blit(fps,(10,5))
+    win.blit(pos,(10,25))
+    win.blit(momentum,(10,45))
+    win.blit(test, (100,10))
+
+
 run = True
 while run:
 
@@ -51,19 +71,14 @@ while run:
     Player.update(Stages[0])
     for i in range (len(Stages[0])):
         Stages[0][i].draw()
-    
-    textsurface = myfont.render(str(str(Player.rect.x)+" : "+str(Player.rect.y)), False, (0, 255, 0))
-    win.blit(textsurface,(250,250))
-    
 
+    fps = int(round(clock.get_fps(),0))
+    if DEBUG:
+        debug_overlay(Player,fps)
     
     pygame.display.update() # Updates game display, essential to refresh every frame
     clock.tick(60)
 
-
-
-
-
 pygame.quit()
 
-# test
+
