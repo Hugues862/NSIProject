@@ -6,7 +6,8 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         (self.spx, self.spy) = vel
         self.color = (255,0,0)
-        self.rect = pygame.Rect(x, y, 50, 50)
+        self.size = 25
+        self.rect = pygame.Rect(x, y, self.size, self.size)
         self.momentum = [0,0]
         self.m_right = False
         self.m_left = False
