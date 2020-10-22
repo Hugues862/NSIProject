@@ -13,10 +13,12 @@ myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 
 Users = []
+Users.append(players.Player(win,500,500, (1,1))) # Creates a new player
 Stages = stages.initStages(win)
 
+CamX = 0
+CamY = 0
 
-Users.append(players.Player(win,500,500, (1,1))) # Creates a new player
 
 #Event Listener
 run = True
@@ -53,12 +55,14 @@ while run:
     
 
     Users[0].update(Stages[0])
+    Users[0].draw((CamX,CamY))
     for i in range (len(Stages[0])):
         Stages[0][i].draw()
     
     textsurface = myfont.render(str(str(Users[0].rect.x)+" : "+str(Users[0].rect.y)), False, (0, 255, 0))
     win.blit(textsurface,(250,250))
     
+
     
     pygame.display.update() # Updates game display, essential to refresh every frame
     clock.tick(60)
