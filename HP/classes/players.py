@@ -12,6 +12,11 @@ class Player(pygame.sprite.Sprite):
         self.m_right = False
         self.m_left = False
 
+        #game variables
+        self.gravity_multiplier = 1.5
+        self.jump_momentum = 25
+        self.GlobalMomentumMultiplier = 0.95
+        self.GlobalMomentumExtremums = [1,-1]
 
         self.win = win
         (self.screen_width,self.screen_height) = self.win.get_size()       
@@ -78,17 +83,17 @@ class Player(pygame.sprite.Sprite):
     def globalmove(self):
         self.rect.x += self.momentum[0]
         self.rect.y += self.momentum[1]
-        print(self.momentum)
+        """ print(self.momentum) """
         
         if self.momentum[0] != 0:
-            self.momentum[0] = self.momentum[0]*0.95
+            self.momentum[0] = self.momentum[0]*self.GlobalMomentumMultiplier
 
         if self.momentum[1] != 0:
-            self.momentum[1] = self.momentum[1]*0.95
+            self.momentum[1] = self.momentum[1]*self.GlobalMomentumMultiplier
         
-        if self.momentum[0] < 1 and self.momentum[0] > -1:
+        if self.momentum[0] < self.GlobalMomentumExtremums[0] and self.momentum[0] > self.GlobalMomentumExtremums[1]:
             self.momentum[0] = 0
-        if self.momentum[1] < 1 and self.momentum[1] > -1:
+        if self.momentum[1] < self.GlobalMomentumExtremums[0] and self.momentum[1] > self.GlobalMomentumExtremums[1]:
             self.momentum[1] = 0
 
         self.momentum[0] = round(self.momentum[0],1)
@@ -117,7 +122,7 @@ class Player(pygame.sprite.Sprite):
     def jump(self):
         if self.isJump == False:
             self.isJump = True
-            self.momentum[1] -= 20
+            self.momentum[1] -= self.jump_momentum
             self.isJump = False
    
     def boundaries(self,axis):
@@ -132,7 +137,7 @@ class Player(pygame.sprite.Sprite):
 
     def gravity(self,Platforms):
         if self.on_platform == False:
-            self.momentum[1] += 1.5
+            self.momentum[1] += self.gravity_multiplier
 
     def movex(self):
         if self.boundaries("x"):
@@ -143,7 +148,6 @@ class Player(pygame.sprite.Sprite):
         else:
             self.momentum[0] = 0
         
-
     def draw(self): 
         pygame.draw.rect(self.win, self.color, self.rect)
 
