@@ -34,8 +34,6 @@ class Player(pygame.sprite.Sprite):
 
         self.CollisionCheck(Platforms)
         
-        
-        self.draw()
     
     def CollisionCheck(self,Platforms):
         """
@@ -128,7 +126,8 @@ class Player(pygame.sprite.Sprite):
             self.rect.left = 0
 
 
-    def draw(self):
+    def draw(self,CamCoords): 
+        self.rect.move(CamCoords[0],CamCoords[1])
         pygame.draw.rect(self.win, self.color, self.rect)
 
 
