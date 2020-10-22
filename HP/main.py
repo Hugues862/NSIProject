@@ -15,8 +15,8 @@ Platforms = []
 
 
 Users.append(players.Player(win,500,500, (1,1))) # Creates a new player
-Platforms.append(platform.Platform(win,100,600,600,50))
-
+Platforms.append(platform.hardPlatform(win,100,600,600,50))
+print(Platforms[0].rect.size)
 #Event Listener
 run = True
 while run:
