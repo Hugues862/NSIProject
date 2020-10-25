@@ -37,7 +37,7 @@ def threaded_client(conn, player):
     reply = ""
     while True:
         try:
-            data = read_pos(conn.recv(2048).decode())
+            data = read_pos(conn.recv(2048*1).decode())
             pos[player] = data
 
             if not data:
@@ -66,3 +66,4 @@ while True:
 
     start_new_thread(threaded_client, (conn, currentPlayer))
     currentPlayer += 1
+
