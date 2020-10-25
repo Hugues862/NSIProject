@@ -1,6 +1,8 @@
 import pygame, pprint 
 from pygame.locals import*
 
+import classes.network as network
+
 import classes.EventsFile as EventsFile
 import classes.players as players
 import classes.platform as platform
@@ -17,11 +19,11 @@ DEBUG = True
 """TEMP VARIABLES"""
 clientID = 0
 
+
 win = pygame.display.set_mode((1536,864))
 myfont = pygame.font.SysFont('Comic Sans MS', 20)
 
-Player = players.Player(win,500,500, (1.5,1.5)) # Creates a new player
-Stages = stages.initStages(win)
+
 
 def debug_overlay(Player,fps):
     fps_text = str(fps) 
@@ -41,9 +43,12 @@ def redrawWin():
 
 
     Player.update(Stages[0])
+    Player2.update(Stages[0])
 
     for i in range (len(Stages[0])):
         Stages[0][i].draw()
+
+    
 
     if DEBUG:
         fps = int(round(clock.get_fps(),0))
@@ -90,17 +95,37 @@ def eventCheck(event):
         if event.key == pygame.K_LEFT:
             Player.m_left = False
 
-def main():
+def read_pos(str):
+    str = str.split(",")
+    return int(str[0]), int(str[1])
 
+def make_pos(tup):
+    return str(str(tup[0]) + "," + str(tup[1]))
+
+
+def main():
     run = True
+
+    n = network.Network()
+    startPos = read_pos(n.getPos())
+
+    global Player, Player2, Stages
+    Player = players.Player(win,startPos[0],startPos[1], (1.5,1.5)) # Creates a new player
+    Player2 = players.Player(win,500,500, (1.5,1.5))
+    Stages = stages.initStages(win)
+
     while run:  
+        
+        p2Pos = read_pos(n.send(make_pos((Player.rect.x, Player.rect.y))))
+        Player2.rect.x = p2Pos[0]
+        Player2.rect.y = p2Pos[1]
 
         """Listening to the events """
         for event in pygame.event.get(): # Get all events
             if event.type == pygame.QUIT: # QUIT event
                 run = EventsFile.GameQuit() # returns False
-                
-            eventCheck(event)
+
+            eventCheck(event) #check all events, KEYUP | KEYDOWN
         
         redrawWin() # Updates game display, essential to refresh every frame
         clock.tick(60)
