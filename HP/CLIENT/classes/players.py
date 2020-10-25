@@ -42,7 +42,7 @@ class Player(pygame.sprite.Sprite):
         self.corrections()
         
         self.draw()
-        print(self.run)
+        """ print(self.run) """
     
     def CollisionCheck(self,Platforms):
         """
