@@ -1,4 +1,6 @@
 import pygame, pprint 
+from pygame.locals import*
+
 import classes.EventsFile as EventsFile
 import classes.players as players
 import classes.platform as platform
@@ -49,20 +51,36 @@ while run:
             run = EventsFile.GameQuit() # returns False
 
         if event.type == pygame.KEYDOWN:
+
+            if event.key == pygame.K_SPACE: # Shift Doesn't work
+                Player.run = False
+
+            # Use of Directional keys
+
             if event.key == pygame.K_RIGHT:
                 Player.m_right = True
+
             if event.key == pygame.K_LEFT:
                 Player.m_left = True
+
             if event.key == pygame.K_UP:
                 Player.jump()
+
             # debug
             if event.key == pygame.K_s:
                 Player.rect.x = 400
                 Player.rect.y = 400
             
         if event.type == pygame.KEYUP:
+
+            # Go back to default state when releasing keys
+
+            if event.key == pygame.K_SPACE:
+                Player.run = True
+
             if event.key == pygame.K_RIGHT:
                 Player.m_right = False
+
             if event.key == pygame.K_LEFT:
                 Player.m_left = False
     

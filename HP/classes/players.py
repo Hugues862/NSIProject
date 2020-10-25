@@ -11,6 +11,7 @@ class Player(pygame.sprite.Sprite):
         self.momentum = [0,0]
         self.m_right = False
         self.m_left = False
+        self.run = True # Running default
 
         #game variables
         self.gravity_multiplier = 1.5
@@ -41,6 +42,7 @@ class Player(pygame.sprite.Sprite):
         self.corrections()
         
         self.draw()
+        print(self.run)
     
     def CollisionCheck(self,Platforms):
         """
@@ -142,12 +144,27 @@ class Player(pygame.sprite.Sprite):
 
     def movex(self): # Adds to Horizontal Momentum
         if self.boundaries("x"):
-            if self.m_right:
-                if self.momentum[0] <= 10:
-                    self.momentum[0] += self.spx
-            if self.m_left:
-                if self.momentum[0] >= -10:
-                    self.momentum[0] += -self.spx
+
+            if self.m_right: # Right Movement
+
+                if self.run: # Run speed
+                    if self.momentum[0] <= 7.5:
+                        self.momentum[0] += self.spx
+
+                else: # Walk Speed
+                    if self.momentum[0] <= 1.5:
+                        self.momentum[0] += self.spx
+
+            if self.m_left: # Left Movement
+
+                if self.run: # Run Speed
+                    if self.momentum[0] >= -7.5:
+                        self.momentum[0] -= self.spx
+
+                else: # Walk Speed
+                    if self.momentum[0] >= -1.5:
+                        self.momentum[0] -= self.spx
+
         else:
             self.momentum[0] = 0
         
