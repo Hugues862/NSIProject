@@ -41,7 +41,6 @@ def debug_overlay(Player,fps):
 def redrawWin():
     win.fill((0,0,0)) # Clears screen every frame
 
-
     Player.update(win,Stages[0])
     Player2.update(win,Stages[0])
     pygame.draw.rect(win, Player.color, Player.rect)

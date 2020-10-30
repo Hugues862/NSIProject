@@ -23,11 +23,9 @@ except socket.error as e:
     str(e)
 
 s.listen(2)
-print("Waiting for a connection, Server Started")
+print("\n\nWaiting for a connection, Server Started\n\n", server, port,"\n")
 
-
-
-players = [classPlayers.Player(100,100),classPlayers.Player(300,300)]
+players = [classPlayers.Player(430,250),classPlayers.Player(1100,250)]
 
 def threaded_client(conn, player):
     conn.send(pickle.dumps(players[player]))

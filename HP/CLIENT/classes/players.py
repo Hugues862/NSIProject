@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite):
 
         #game variables
         self.gravity_multiplier = 1.5
-        self.jump_momentum = 25
+        self.jump_momentum = 30
         self.GlobalMomentumMultiplier = 0.90
         self.GlobalMomentumExtremums = [1,-1]
 
