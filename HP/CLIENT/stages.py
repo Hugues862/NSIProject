@@ -1,6 +1,6 @@
 import pygame
 import classes.platform as platform
-import screenConvert as convert
+import classes.screenConvert as convert
 
 def initStages(window): # Don't forget to adjust the size to the screen size
 
