@@ -2,7 +2,7 @@ import pygame
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self,win,x,y,vel):
+    def __init__(self,x,y,vel=(1.5,1.5)):
         pygame.sprite.Sprite.__init__(self)
         (self.spx, self.spy) = vel
         self.color = (255,0,0)
@@ -19,14 +19,17 @@ class Player(pygame.sprite.Sprite):
         self.GlobalMomentumMultiplier = 0.90
         self.GlobalMomentumExtremums = [1,-1]
 
-        self.win = win
-        (self.screen_width,self.screen_height) = self.win.get_size()       
+           
 
         self.isJump = False 
         self.on_platform = False
 
-   
-    def update(self,Platforms):
+    def defWinSize(self,win):
+        (self.screen_width,self.screen_height) = win.get_size() 
+
+    def update(self,win,Platforms):
+        self.defWinSize(win)
+        
         self.globalmove()
     
         self.movex()
@@ -41,7 +44,6 @@ class Player(pygame.sprite.Sprite):
         self.CollisionCheck(Platforms)
         self.corrections()
         
-        self.draw()
         """ print(self.run) """
     
     def CollisionCheck(self,Platforms):
@@ -71,7 +73,6 @@ class Player(pygame.sprite.Sprite):
         else:
             self.on_platform = False
         
-
     def corrections(self):
         if self.rect.left < 0:
             self.rect.x = 0
@@ -168,7 +169,5 @@ class Player(pygame.sprite.Sprite):
         else:
             self.momentum[0] = 0
         
-    def draw(self): 
-        pygame.draw.rect(self.win, self.color, self.rect)
 
 

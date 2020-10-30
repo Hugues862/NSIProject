@@ -42,8 +42,10 @@ def redrawWin():
     win.fill((0,0,0)) # Clears screen every frame
 
 
-    Player.update(Stages[0])
-    Player2.update(Stages[0])
+    Player.update(win,Stages[0])
+    Player2.update(win,Stages[0])
+    pygame.draw.rect(win, Player.color, Player.rect)
+    pygame.draw.rect(win, Player2.color, Player2.rect)
 
     for i in range (len(Stages[0])):
         Stages[0][i].draw()
@@ -95,30 +97,19 @@ def eventCheck(event):
         if event.key == pygame.K_LEFT:
             Player.m_left = False
 
-def read_pos(str):
-    str = str.split(",")
-    return int(str[0]), int(str[1])
-
-def make_pos(tup):
-    return str(str(tup[0]) + "," + str(tup[1]))
-
 
 def main():
     run = True
-
     n = network.Network()
-    startPos = read_pos(n.getPos())
 
     global Player, Player2, Stages
-    Player = players.Player(win,startPos[0],startPos[1], (1.5,1.5)) # Creates a new player
-    Player2 = players.Player(win,500,500, (1.5,1.5))
+    Player = n.getP()
+
     Stages = stages.initStages(win)
 
     while run:  
         
-        p2Pos = read_pos(n.send(make_pos((Player.rect.x, Player.rect.y))))
-        Player2.rect.x = p2Pos[0]
-        Player2.rect.y = p2Pos[1]
+        Player2 = n.send(Player)
 
         """Listening to the events """
         for event in pygame.event.get(): # Get all events
