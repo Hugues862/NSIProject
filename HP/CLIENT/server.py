@@ -20,7 +20,8 @@ import classes.players as classPlayers
 
 server = '192.168.0.15'
 port = 5555
-playerConn = [[[None],[None]],[[None],[None]]]
+playerConn = [[["undef"],["undef"]],[["undef"],["undef"]]]
+disconnect = [True, True]
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -29,7 +30,7 @@ try:
 except socket.error as e:
     str(e)
 
-s.listen(2)
+s.listen()
 console.log("Server running")
 
 players = [classPlayers.Player(430,250),classPlayers.Player(1100,250)]
@@ -43,11 +44,25 @@ def printConsole():
     table.add_column("Player 1")
     table.add_column("Player 2")
 
+    if disconnect[0]:
+        ip1 = None
+        port1 = None
+    else:
+        ip1 = str(playerConn[0][0])
+        port1 = str(playerConn[0][1])
+
+    if disconnect[1]:
+        ip2 = None
+        port2 = None
+    else:
+        ip2 = str(playerConn[1][0])
+        port2 = str(playerConn[1][1])
+
     table.add_row(
-        "IP", str(server),str(playerConn[0][0]),str(playerConn[1][0])
+        "IP", str(server),ip1,ip2
     )
     table.add_row(
-        "PORT", str(port),str(playerConn[0][1]),str(playerConn[1][1])
+        "PORT", str(port),port1,port2
     )
     postxt1 = str(players[0].rect.x)+" : "+str(players[0].rect.y)
     postxt2 = str(players[1].rect.x)+" : "+str(players[1].rect.y)
@@ -64,7 +79,6 @@ def clear():
     # for mac and linux(here, os.name is 'posix') 
     else: 
         _ = system('clear')     
-
 
 def consoleupdate():
     while True:
@@ -99,20 +113,25 @@ def threaded_client(conn, player):
             break
 
     if player == 1:
-        playerConn[1] = [None,None] 
+        disconnect[1] = True 
     else:
-        playerConn[0] = [None,None]
+        disconnect[0] = True
     conn.close()
  
 currentPlayer = 0
+
+
 while True:
     conn, addr = s.accept()
     print("Connected to:", addr)
 
+    
     if currentPlayer == 0 :
-            playerConn[0] = addr
+        playerConn[0] = addr
+        disconnect[0] = False
     else:
-            playerConn[1] = addr
+        playerConn[1] = addr
+        disconnect[1] = False
 
     start_new_thread(threaded_client, (conn, currentPlayer))
     currentPlayer += 1
