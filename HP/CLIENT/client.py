@@ -1,4 +1,5 @@
-import pygame, pprint 
+import pygame
+import pprint 
 from pygame.locals import*
 
 import classes.network as network
