@@ -18,7 +18,7 @@ console = Console()
 
 import classes.players as classPlayers
 
-server = '192.168.0.15'
+server = '192.168.0.23'
 port = 5555
 playerConn = [[["undef"],["undef"]],[["undef"],["undef"]]]
 disconnect = [True, True]
