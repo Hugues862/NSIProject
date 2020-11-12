@@ -18,12 +18,19 @@ console = Console()
 
 import classes.players as classPlayers
 
-server = '192.168.0.23'
+"""     Variables   """
+
+consoleStatus = True
+
+"""-----------------"""
+hostname = socket.gethostname()
+ipv4 = socket.gethostbyname(hostname) #recupers l'adresse IP local
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+server = ipv4
 port = 5555
 playerConn = [[["undef"],["undef"]],[["undef"],["undef"]]]
 disconnect = [True, True]
-
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
     s.bind((server, port))
@@ -85,7 +92,7 @@ def consoleupdate():
         time.sleep(1)
         clear()
         printConsole()
-start_new_thread(consoleupdate)
+if consoleStatus : start_new_thread(consoleupdate)
 
 def threaded_client(conn, player):
     conn.send(pickle.dumps(players[player]))

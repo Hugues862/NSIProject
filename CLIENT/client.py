@@ -1,5 +1,6 @@
 import pygame
 import pprint 
+import socket
 from pygame.locals import*
 
 import classes.network as network
@@ -24,6 +25,8 @@ clientID = 0
 win = pygame.display.set_mode((1536,864))
 myfont = pygame.font.SysFont('Comic Sans MS', 20)
 
+hostname = socket.gethostname()
+ipv4 = socket.gethostbyname(hostname) #recupers l'adresse IP
 
 
 def debug_overlay(Player,fps):
@@ -100,7 +103,7 @@ def eventCheck(event):
 
 def main():
     run = True
-    n = network.Network()
+    n = network.Network(ipv4)
 
     global Player, Player2, Stages
     Player = n.getP()
