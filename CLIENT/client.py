@@ -1,6 +1,9 @@
 import pygame
 import pprint 
 import socket
+import time
+import datetime
+
 from pygame.locals import*
 
 import classes.network as network
@@ -19,7 +22,7 @@ DEBUG = True
 
 
 """TEMP VARIABLES"""
-clientID = 0
+id = None
 
 
 win = pygame.display.set_mode((1536,864))
@@ -42,86 +45,96 @@ def debug_overlay(Player,fps):
     win.blit(pos,(10,25))
     win.blit(momentum,(10,45))
 
-def redrawWin():
+def redrawWin(id):
     win.fill((0,0,0)) # Clears screen every frame
-
-    Player.update(win,Stages[0])
-    Player2.update(win,Stages[0])
-    pygame.draw.rect(win, Player.color, Player.rect)
-    pygame.draw.rect(win, Player2.color, Player2.rect)
+    #Players[0].update(win,Stages[0])
+    #Players[1].update(win,Stages[0])
+    for i in range(len(Players)):
+        #Players[i].update(win,Stages[0])
+        pygame.draw.rect(win, Players[i].color, Players[i].rect)
 
     for i in range (len(Stages[0])):
-        Stages[0][i].draw()
+        pygame.draw.rect(win, Stages[0][i].color, Stages[0][i].rect)
 
     
 
     if DEBUG:
         fps = int(round(clock.get_fps(),0))
-        debug_overlay(Player,fps)
+        debug_overlay(Players[id],fps)
 
 
     pygame.display.update()
 
+state = {}
+
 def eventCheck(event):
     """Current Event list"""
-    
 
     if event.type == pygame.KEYDOWN:
 
         if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT: # Shift Doesn't work
-            Player.run = False
+            state["run"] = False
 
         # Use of Directional keys
 
         if event.key == pygame.K_RIGHT:
-            Player.m_right = True
+            state["m_right"] = True
 
         if event.key == pygame.K_LEFT:
-            Player.m_left = True
+            state["m_left"] = True
 
         if event.key == pygame.K_UP:
-            Player.jump()
+            state["jump"] = True
 
         # debug
-        if event.key == pygame.K_s:
-            Player.rect.x = 400
-            Player.rect.y = 400
+    
         
     if event.type == pygame.KEYUP:
 
         # Go back to default state when releasing keys
 
         if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
-            Player.run = True
+            state["run"] = True
 
         if event.key == pygame.K_RIGHT:
-            Player.m_right = False
+            state["m_right"] = False
 
         if event.key == pygame.K_LEFT:
-            Player.m_left = False
+            state["m_left"] = False
 
+        if event.key == pygame.K_UP:
+            state["jump"] = False
+    return state
+
+def gettime():
+    dt = datetime.datetime.now()
+    ms = str(dt.microsecond)
+    return dt.strftime("%H:%M:%S:") + ms[2:]
 
 def main():
     run = True
     n = network.Network(ipv4)
+    n.connect()
 
-    global Player, Player2, Stages
-    Player = n.getP()
 
-    Stages = stages.initStages(win)
+    global Players, Stages
+    id = n.recv()
+    Stages = n.recv() 
 
     while run:  
-        
-        Player2 = n.send(Player)
-
+        data = n.recv()
+        #print(f"{gettime()} : data recieved -> ")
+        Players = data
         """Listening to the events """
         for event in pygame.event.get(): # Get all events
             if event.type == pygame.QUIT: # QUIT event
                 run = EventsFile.GameQuit() # returns False
 
-            eventCheck(event) #check all events, KEYUP | KEYDOWN
+            NewUpdate = eventCheck(event) #check all events, KEYUP | KEYDOWN
         
-        redrawWin() # Updates game display, essential to refresh every frame
+        redrawWin(id) # Updates game display, essential to refresh every frame
+        n.send(NewUpdate)
+        #print(f"{gettime()} : data sent-> {NewUpdate}")
         clock.tick(60)
 
     pygame.quit()

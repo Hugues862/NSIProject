@@ -12,10 +12,11 @@ class Player(pygame.sprite.Sprite):
         self.m_right = False
         self.m_left = False
         self.run = True # Running default
+        (self.screen_width,self.screen_height) = (1536,864) 
 
         #game variables
-        self.gravity_multiplier = 1.5
-        self.jump_momentum = 30
+        self.gravity_multiplier = 2.5
+        self.jump_momentum = 50
         self.GlobalMomentumMultiplier = 0.90
         self.GlobalMomentumExtremums = [1,-1]
 
@@ -24,11 +25,8 @@ class Player(pygame.sprite.Sprite):
         self.isJump = False 
         self.on_platform = False
 
-    def defWinSize(self,win):
-        (self.screen_width,self.screen_height) = win.get_size() 
 
-    def update(self,win,Platforms):
-        self.defWinSize(win)
+    def update(self,Platforms):
         
         self.globalmove()
     
@@ -46,6 +44,14 @@ class Player(pygame.sprite.Sprite):
         
         """ print(self.run) """
     
+    def setAttribute(self,att,val):
+        if att == 'm_right':
+            self.m_right = val
+        if att == 'm_left':
+            self.m_left = val
+        if att == 'run':
+            self.run = val
+
     def CollisionCheck(self,Platforms):
         """
         Collision check function
@@ -124,7 +130,7 @@ class Player(pygame.sprite.Sprite):
                 self.momentum[1]*= 0.95 """
     
     def jump(self): # Adds to Vertical Momentum
-        if self.isJump == False:
+        if self.isJump == False and self.on_platform or self.isJump == False and self.rect.bottom == self.screen_height:
             self.isJump = True
             self.momentum[1] -= self.jump_momentum
             self.isJump = False
