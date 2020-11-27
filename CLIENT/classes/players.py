@@ -19,6 +19,8 @@ class Player(pygame.sprite.Sprite):
         self.jump_momentum = 50
         self.GlobalMomentumMultiplier = 0.90
         self.GlobalMomentumExtremums = [1,-1]
+        self.GlobalMaxRunSpd = 7.5
+        self.GlobalMaxWalkSpd = 1.5
 
         self.isJump = False 
         self.on_platform = False
@@ -28,7 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.status = {
             "stun" : False,
             "stunTime" : 5 * 1000,
-            "sleep" : True,
+            "sleep" : False,
             "sleepSpam" : 0,
             "giant" : False,
             "giantTime" : 10 * 1000,
@@ -36,15 +38,15 @@ class Player(pygame.sprite.Sprite):
             "miniTime" : 10 * 1000,
             "bolt" : False,
             "boltTime" : 10 * 1000,
+            "boltSpd" : (2.25, 2.25),
             "poison" : False,
             "poisonTime" : 10 * 1000,
             "strong" : False,
             "strongTime" : 10 * 1000,
             "slow" : False,
-            "slowTime" : 10 * 1000
+            "slowTime" : 10 * 1000,
+            "slowSpd" : (0.75, 0.75)
         }
-
-
 
 
     def update(self,Platforms):
@@ -180,27 +182,28 @@ class Player(pygame.sprite.Sprite):
             if self.m_right: # Right Movement
 
                 if self.run: # Run speed
-                    if self.momentum[0] <= 7.5:
+                    if self.momentum[0] <= self.GlobalMaxRunSpd:
                         self.momentum[0] += self.spx
 
                 else: # Walk Speed
-                    if self.momentum[0] <= 1.5:
+                    if self.momentum[0] <= self.GlobalMaxWalkSpd:
                         self.momentum[0] += self.spx
 
             if self.m_left: # Left Movement
 
                 if self.run: # Run Speed
-                    if self.momentum[0] >= -7.5:
+                    if self.momentum[0] >= -self.GlobalMaxRunSpd:
                         self.momentum[0] -= self.spx
 
                 else: # Walk Speed
-                    if self.momentum[0] >= -1.5:
+                    if self.momentum[0] >= -self.GlobalMaxWalkSpd:
                         self.momentum[0] -= self.spx
 
         else:
             self.momentum[0] = 0
     
-    
+    # LE TIMER MARCHE PAS
+
     def get_time(self):
         return pygame.time.get_ticks()
     
@@ -209,7 +212,7 @@ class Player(pygame.sprite.Sprite):
         if self.status["stun"] == True:
 
             # Change variables to 0 in order to be not movable
-            self.momentum = [0,0]
+            self.momentum[0] = 0
 
             if self.status["stunTime"] > 0:
                  self.status["stunTime"] -= self.get_time() - curTime
@@ -221,7 +224,7 @@ class Player(pygame.sprite.Sprite):
         if self.status["sleep"] == True:
 
             # Change variables to 0 in order to be not movable
-            self.momentum = [0,0]
+            self.momentum[0] = 0
 
             if self.status["sleepSpam"] >= 25: # Return the player to a normal state after spam
                 self.status["sleep"] = False
@@ -230,7 +233,9 @@ class Player(pygame.sprite.Sprite):
         if self.status["bolt"] == True:
 
             # Change variables to be fast
-            self.GlobalMomentumMultiplier = 1.35 # .90 * 1.5
+            (self.spx, self.spy) = self.status["boltSpd"]
+            self.GlobalMaxWalkSpd = 4.5
+            self.GlobalMaxRunSpd = 22.5
 
             if self.status["boltTime"] > 0:
                  self.status["boltTime"] -= self.get_time() - curTime
@@ -238,12 +243,15 @@ class Player(pygame.sprite.Sprite):
             else: # Return the player to a normal state
                 self.status["bolt"] = False
                 self.status["boltTime"] = 10 * 1000
-                self.GlobalMomentumMultiplier = 0.90
-        
+                self.GlobalMaxWalkSpd = 1.5
+                self.GlobalMaxRunSpd = 7.5
+
         if self.status["slow"] == True:
 
             # Change variables to be slow
-            self.GlobalMomentumMultiplier = 0.45 # .90 / 2
+            (self.spx, self.spy) = self.status["slowSpd"]
+            self.GlobalMaxWalkSpd = 0.75
+            self.GlobalMaxRunSpd = 3.75
 
             if self.status["slowTime"] > 0:
                  self.status["slowTime"] -= self.get_time() - curTime
@@ -251,9 +259,10 @@ class Player(pygame.sprite.Sprite):
             else: # Return the player to a normal state
                 self.status["slow"] = False
                 self.status["slowTime"] = 10 * 1000
-                self.GlobalMomentumMultiplier = 0.90
+                self.GlobalMaxWalkSpd = 1.5
+                self.GlobalMaxRunSpd = 7.5
 
-        # Does nothing for now
+        # mini, giant and poison DOES NOTHING FOR NOW
 
         if self.status["mini"] == True:
             self.status["mini"] = False
