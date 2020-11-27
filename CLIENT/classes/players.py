@@ -50,12 +50,12 @@ class Player(pygame.sprite.Sprite):
     def update(self,Platforms):
         
         prevTime = self.get_time()
-        
-        self.checkStatus(prevTime)
 
         self.globalmove()
     
         self.movex()
+
+        self.checkStatus(prevTime)
         
         if self.boundaries("y"):
             self.gravity(Platforms)
@@ -209,7 +209,7 @@ class Player(pygame.sprite.Sprite):
         if self.status["stun"] == True:
 
             # Change variables to 0 in order to be not movable
-            self.GlobalMomentumMultiplier = 0
+            self.momentum = [0,0]
 
             if self.status["stunTime"] > 0:
                  self.status["stunTime"] -= self.get_time() - curTime
@@ -217,17 +217,15 @@ class Player(pygame.sprite.Sprite):
             else: # Return the player to a normal state
                 self.status["stun"] = False
                 self.status["stunTime"] = 5 * 1000
-                self.GlobalMomentumMultiplier = 0.90
 
         if self.status["sleep"] == True:
 
             # Change variables to 0 in order to be not movable
-            self.GlobalMomentumMultiplier = 0
+            self.momentum = [0,0]
 
             if self.status["sleepSpam"] >= 25: # Return the player to a normal state after spam
                 self.status["sleep"] = False
                 self.status["sleepSpam"] = 0
-                self.GlobalMomentumMultiplier = 0.90
         
         if self.status["bolt"] == True:
 
