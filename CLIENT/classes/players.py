@@ -2,7 +2,7 @@ import pygame
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self,x,y,vel=(1.5,1.5)):
+    def __init__(self, x, y, vel=(1.5,1.5)):
         pygame.sprite.Sprite.__init__(self)
         (self.spx, self.spy) = vel
         self.color = (255,0,0)
@@ -20,14 +20,39 @@ class Player(pygame.sprite.Sprite):
         self.GlobalMomentumMultiplier = 0.90
         self.GlobalMomentumExtremums = [1,-1]
 
-           
-
         self.isJump = False 
         self.on_platform = False
+
+        # Status
+
+        self.status = {
+            "stun" : False,
+            "stunTime" : 5 * 1000,
+            "sleep" : False,
+            "sleepSpam" : 0,
+            "giant" : False,
+            "giantTime" : 10 * 1000,
+            "mini" : False,
+            "miniTime" : 10 * 1000,
+            "bolt" : False,
+            "boltTime" : 10 * 1000,
+            "poison" : False,
+            "poison" : 10 * 1000,
+            "strong" : False,
+            "strongTime" : 10 * 1000,
+            "slow" : False,
+            "slowTime" : 10 * 1000
+        }
+
+
 
 
     def update(self,Platforms):
         
+        prevTime = self.get_time()
+        
+        self.status(prevTime)
+
         self.globalmove()
     
         self.movex()
@@ -174,6 +199,68 @@ class Player(pygame.sprite.Sprite):
 
         else:
             self.momentum[0] = 0
+    
+    def get_time(self):
+        return pygame.time.get_ticks()
+
+    def status(self, curTime):
         
+        if self.status["stun"] == True:
 
+            # Change variables to 0 in order to be not movable
+            self.GlobalMomentumMultiplier = 0
 
+             if self.status["stunTime"] > 0:
+                 self.status["stunTime"] -= self.get_time() - curTime
+
+            else: # Return the player to a normal state
+                self.status["stun"] = False
+                self.status["stunTime"] = 5 * 1000
+                self.GlobalMomentumMultiplier = 0.90
+
+        if self.status["sleep"] == True:
+
+            # Change variables to 0 in order to be not movable
+            self.GlobalMomentumMultiplier = 0
+
+            if self.status["sleepSpam"] >= 25: # Return the player to a normal state after spam
+                self.status["sleep"] = False
+                self.status["sleepSpam"] = 0
+                self.GlobalMomentumMultiplier = 0.90
+        
+        if self.status["bolt"] == True:
+
+            # Change variables to be fast
+            self.GlobalMomentumMultiplier = 1.35 # .90 * 1.5
+
+             if self.status["boltTime"] > 0:
+                 self.status["boltTime"] -= self.get_time() - curTime
+
+            else: # Return the player to a normal state
+                self.status["bolt"] = False
+                self.status["boltTime"] = 10 * 1000
+                self.GlobalMomentumMultiplier = 0.90
+        
+        if self.status["slow"] == True:
+
+            # Change variables to be slow
+            self.GlobalMomentumMultiplier = 0.45 # .90 / 2
+
+             if self.status["slowTime"] > 0:
+                 self.status["slowTime"] -= self.get_time() - curTime
+
+            else: # Return the player to a normal state
+                self.status["slow"] = False
+                self.status["slowTime"] = 10 * 1000
+                self.GlobalMomentumMultiplier = 0.90
+
+        # Does nothing for now
+
+        if self.status["mini"] == True:
+            self.status["mini"] = False
+
+        if self.status["giant"] == True:
+            self.status["giant"] = False
+
+        if self.status["poison"] == True:
+            self.status["poison"] = False

@@ -123,7 +123,13 @@ def UpdatePlayerData(data,id):
     for name in data:
         global players
         if name == 'jump' and data[name]==True:
-            players[id].jump()
+
+            if players[id].status["sleep"] == True:
+                players[id].status["sleepSpam"] += 1
+
+            else:
+                players[id].jump()
+
         else:
             players[id].setAttribute(name,data[name])
             
@@ -169,7 +175,7 @@ while True:
     #id = int(''.join(str(e) for e in [randint(0,9) for x in range(6)]))
     id = len(Users) + 0
     Users.append([addr,id])
-    players.append(classPlayers.Player(430,250))
+    players.append(classPlayers.Player(430, 25))
     thread = threading.Thread(group=None, target=threaded_client, name=f"Player{id}", args=(conn,id), kwargs={})
     thread.start()
 
