@@ -28,7 +28,7 @@ class Player(pygame.sprite.Sprite):
         self.status = {
             "stun" : False,
             "stunTime" : 5 * 1000,
-            "sleep" : False,
+            "sleep" : True,
             "sleepSpam" : 0,
             "giant" : False,
             "giantTime" : 10 * 1000,
@@ -37,7 +37,7 @@ class Player(pygame.sprite.Sprite):
             "bolt" : False,
             "boltTime" : 10 * 1000,
             "poison" : False,
-            "poison" : 10 * 1000,
+            "poisonTime" : 10 * 1000,
             "strong" : False,
             "strongTime" : 10 * 1000,
             "slow" : False,
@@ -51,7 +51,7 @@ class Player(pygame.sprite.Sprite):
         
         prevTime = self.get_time()
         
-        self.status(prevTime)
+        self.checkStatus(prevTime)
 
         self.globalmove()
     
@@ -200,17 +200,18 @@ class Player(pygame.sprite.Sprite):
         else:
             self.momentum[0] = 0
     
+    
     def get_time(self):
         return pygame.time.get_ticks()
-
-    def status(self, curTime):
+    
+    def checkStatus(self, curTime):
         
         if self.status["stun"] == True:
 
             # Change variables to 0 in order to be not movable
             self.GlobalMomentumMultiplier = 0
 
-             if self.status["stunTime"] > 0:
+            if self.status["stunTime"] > 0:
                  self.status["stunTime"] -= self.get_time() - curTime
 
             else: # Return the player to a normal state
@@ -233,7 +234,7 @@ class Player(pygame.sprite.Sprite):
             # Change variables to be fast
             self.GlobalMomentumMultiplier = 1.35 # .90 * 1.5
 
-             if self.status["boltTime"] > 0:
+            if self.status["boltTime"] > 0:
                  self.status["boltTime"] -= self.get_time() - curTime
 
             else: # Return the player to a normal state
@@ -246,7 +247,7 @@ class Player(pygame.sprite.Sprite):
             # Change variables to be slow
             self.GlobalMomentumMultiplier = 0.45 # .90 / 2
 
-             if self.status["slowTime"] > 0:
+            if self.status["slowTime"] > 0:
                  self.status["slowTime"] -= self.get_time() - curTime
 
             else: # Return the player to a normal state
