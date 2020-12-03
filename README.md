@@ -26,6 +26,8 @@ Lien Google Docs ==>  https://docs.google.com/document/d/1sox_KMu_VAwAoss42dzgaP
 
 Lien du Github ==> https://github.com/Hugues862/NSIProject/commits/master
 
+Lien du Trello ==> https://trello.com/c/wpyYoYGs/14-github
+
 
 
 Aides et liens pour les tutos:
