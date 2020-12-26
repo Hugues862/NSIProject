@@ -46,7 +46,7 @@ def debug_overlay(Player,fps):
     win.blit(momentum,(10,45))
 
 def redrawWin(id):
-    win.fill((0,0,0)) # Clears screen every frame
+    win.fill((0,0,0)) # Clears screen every frame and Draw Players
     #Players[0].update(win,Stages[0])
     #Players[1].update(win,Stages[0])
     for i in range(len(Players)):
