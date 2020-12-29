@@ -14,7 +14,7 @@ import classes.platform as platform
 import stages as stages
 
 
-def gamecontainer(win, DEBUG):
+def container(win, DEBUG):
 
     clock = pygame.time.Clock()
 
