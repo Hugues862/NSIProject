@@ -1,8 +1,10 @@
 import socket
 import pickle
-TransferBytes = 1024
+TransferBytes = 1024*2
+
+
 class Network:
-    def __init__(self,ip):
+    def __init__(self, ip):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server = ip
         self.port = 5555
@@ -26,10 +28,9 @@ class Network:
             temp = self.client.recv(TransferBytes)
             #temp = temp.decode("utf-8") if id==False else temp.from_bytes(2,"little")
             send = ''
-            
+
             send = pickle.loads(temp)
             return send
         except socket.error as e:
             print(e)
             return False
-

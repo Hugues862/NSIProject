@@ -5,9 +5,9 @@
 #    cd 'C:\Users\hugue\Desktop\CODE\VSCODE\NSIProject\HP\CLIENT/'
 
 
-
+import classes.players as classPlayers
 import socket
-from os import system, name 
+from os import system, name
 import threading
 import sys
 import pickle
@@ -19,21 +19,20 @@ import stages as stages
 
 console = Console()
 
-import classes.players as classPlayers
 
 """     Variables   """
 
 consoleStatus = True
-TransferBytes = 1024
+TransferBytes = 1024*2
 
 """-----------------"""
 hostname = socket.gethostname()
-ipv4 = socket.gethostbyname(hostname) #recupers l'adresse IP local
+ipv4 = socket.gethostbyname(hostname)  # recupers l'adresse IP local
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 server = ipv4
 port = 5555
-playerConn = [[["undef"],["undef"]],[["undef"],["undef"]]]
+playerConn = [[["undef"], ["undef"]], [["undef"], ["undef"]]]
 disconnect = [True, True]
 
 win = None
@@ -50,6 +49,7 @@ s.listen()
 players = []
 Stages = stages.initStages()
 
+
 def printConsole():
     clear()
     table = Table(show_header=True, header_style="bold magenta")
@@ -59,7 +59,8 @@ def printConsole():
     table.add_row("Server", ipv4, str(port))
     for i in range(len(players)):
         try:
-            table.add_row(f"Player {i}", str(Users[i][0][0]), str(Users[i][0][1]))
+            table.add_row(f"Player {i}", str(
+                Users[i][0][0]), str(Users[i][0][1]))
         except:
             pass
     console.print(table)
@@ -89,40 +90,48 @@ def printConsole():
     table.add_row(
         "POS", " ",postxt1,postxt2
     ) """
-    
-def clear(): 
-  
-    # for windows 
-    if name == 'nt': 
-        _ = system('cls') 
-  
-    # for mac and linux(here, os.name is 'posix') 
-    else: 
-        _ = system('clear')     
+
+
+def clear():
+
+    # for windows
+    if name == 'nt':
+        _ = system('cls')
+
+    # for mac and linux(here, os.name is 'posix')
+    else:
+        _ = system('clear')
+
+
 clear()
 console.log("Server running")
+
 
 def consoleupdate():
     while True:
         time.sleep(1)
         clear()
         printConsole()
+
+
 def gettime():
     dt = datetime.datetime.now()
     ms = str(dt.microsecond)
     return dt.strftime("%H:%M:%S:") + ms[2:]
 
-if consoleStatus: 
-    ConsoleThread = threading.Thread(group=None, target=consoleupdate, name="ConsoleUpdate", args=(), kwargs={})
+
+if consoleStatus:
+    ConsoleThread = threading.Thread(
+        group=None, target=consoleupdate, name="ConsoleUpdate", args=(), kwargs={})
     ConsoleThread.start()
 
 Users = []
 
 
-def UpdatePlayerData(data,id):
+def UpdatePlayerData(data, id):
     for name in data:
         global players
-        if name == 'jump' and data[name]==True:
+        if name == 'jump' and data[name] == True:
 
             if players[id].status["sleep"] == True:
                 players[id].status["sleepSpam"] += 1
@@ -131,42 +140,44 @@ def UpdatePlayerData(data,id):
                 players[id].jump()
 
         else:
-            players[id].setAttribute(name,data[name])
-            
+            players[id].setAttribute(name, data[name])
+
 
 def UpdatePlayers(id):
     players[id].update(Stages[0])
 
+
 def threaded_client(conn, id):
-    #Connection started
+    # Connection started
 
     conn.send(pickle.dumps(id))
     conn.send(pickle.dumps(Stages))
     global players
 
-    #main connection loop
+    # main connection loop
     while True:
         try:
             #print(f"{gettime()} : data sent -> {players}")
             conn.send(pickle.dumps(players))
             data = pickle.loads(conn.recv(TransferBytes))
             #print(f"{gettime()} : data recieved -> {data}")
-            UpdatePlayerData(data,id)
+            UpdatePlayerData(data, id)
             UpdatePlayers(id)
         except:
             break
 
-    #connection ends
-    Users[id]==None
-    players[id]==None
+    # connection ends
+    Users[id] == None
+    players[id] == None
     conn.close()
+
+
 """ 
     if player == 1:
         disconnect[1] = True 
     else:
         disconnect[0] = True
      """
- 
 
 
 while True:
@@ -174,8 +185,8 @@ while True:
     print("Connected to:", addr)
     #id = int(''.join(str(e) for e in [randint(0,9) for x in range(6)]))
     id = len(Users) + 0
-    Users.append([addr,id])
+    Users.append([addr, id])
     players.append(classPlayers.Player(430, 250))
-    thread = threading.Thread(group=None, target=threaded_client, name=f"Player{id}", args=(conn,id), kwargs={})
+    thread = threading.Thread(
+        group=None, target=threaded_client, name=f"Player{id}", args=(conn, id), kwargs={})
     thread.start()
-
