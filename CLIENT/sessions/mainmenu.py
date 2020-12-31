@@ -23,9 +23,8 @@ def container(win):
         textrect.topleft = (x, y)
         surface.blit(textobj, textrect)
 
-    click = False
-
     def main_menu():
+        click = False
         """fonction qui run le menu"""
         while True:
             mx, my = pygame.mouse.get_pos()

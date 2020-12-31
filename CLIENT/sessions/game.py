@@ -3,6 +3,7 @@ import pprint
 import socket
 import time
 import datetime
+import sys
 
 from pygame.locals import*
 
@@ -20,6 +21,7 @@ def container(win, DEBUG):
 
     """TEMP VARIABLES"""
     id = None
+    isRun = True
 
     myfont = pygame.font.SysFont('Comic Sans MS', 20)
 
@@ -62,7 +64,6 @@ def container(win, DEBUG):
         """Current Event list"""
 
         if event.type == pygame.KEYDOWN:
-
             if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:  # Shift Doesn't work
                 state["run"] = False
 
@@ -104,16 +105,18 @@ def container(win, DEBUG):
     def main():
         run = True
         print(ipv4)
-        n = network.Network(ipv4)
+        n = network.Network(ipv4, 1024*2)
         n.connect()
 
         global Players, Stages
         id = n.recv()
         Stages = n.recv()
 
+        NewUpdate = {}
+
         while run:
             data = n.recv()
-            #print(f"{gettime()} : data recieved -> ")
+            # print(f"{gettime()} : data recieved -> ")
             Players = data
             """Listening to the events """
             for event in pygame.event.get():  # Get all events
@@ -126,7 +129,7 @@ def container(win, DEBUG):
             # Updates game display, essential to refresh every frame
             redrawWin(id)
             n.send(NewUpdate)
-            #print(f"{gettime()} : data sent-> {NewUpdate}")
+            # print(f"{gettime()} : data sent-> {NewUpdate}")
             clock.tick(60)
 
         pygame.quit()
