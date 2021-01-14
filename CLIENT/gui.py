@@ -11,7 +11,7 @@ mainClock = pygame.time.Clock()
 pygame.init()
 pygame.display.set_caption('GUI')
 
-win = pygame.display.set_mode((1536, 864))
+win = pygame.display.set_mode((300, 500))
 
 font = [pygame.font.SysFont(None, 60), pygame.font.SysFont(None, 30)]
 
@@ -27,6 +27,7 @@ def draw_text(text, font, color, surface, x, y):
 
 
 click = False
+school = True #SI AU LYCEE CHANGER A TRUE SINON FALSE
 
 
 def main_menu():
@@ -88,30 +89,48 @@ def main_menu():
         pygame.display.update()
         mainClock.tick(60)
 
-
-clientpath = "C:/Users/hugue/Documents/Code/NSI/NSIProject/CLIENT/client.py"
-serverpath = "C:/Users/hugue/Documents/Code/NSI/NSIProject/CLIENT/server.py"
-
+if school:
+    from config import serverpathlycee as serverpath
+    from config import clientpathlycee as clientpath
+else:
+    from config import serverpathhome as serverpath
+    from config import clientpathhome as clientpath
 
 def btn1():
-    os.system(f'start cmd /k "python {serverpath}"')
-    time.sleep(2)
-    os.system(f'start cmd /k "python {clientpath}"')
+    if school:
+        os.system(f'start C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe "C:\\ProgramData\\Miniconda3\\python.exe {serverpath}"')
+        time.sleep(2)
+        os.system(f'start C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe "C:\\ProgramData\\Miniconda3\\python.exe {clientpath}"')
+    else:
+        os.system(f'start cmd /k "python {serverpath}"')
+        time.sleep(2)
+        os.system(f'start cmd /k "python {clientpath}"')
 
 
 def btn2():
-    os.system(f'start cmd /k "python {serverpath}"')
-    time.sleep(2)
-    os.system(f'start cmd /k "python {clientpath}"')
-    os.system(f'start cmd /k "python {clientpath}"')
+    if school:
+        os.system(f'start C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe "C:\\ProgramData\\Miniconda3\\python.exe {serverpath}"')
+        time.sleep(2)
+        os.system(f'start C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe "C:\\ProgramData\\Miniconda3\\python.exe {clientpath}"')
+        os.system(f'start C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe "C:\\ProgramData\\Miniconda3\\python.exe {clientpath}"')
+    else:
+        os.system(f'start cmd /k "python {serverpath}"')
+        time.sleep(2)
+        os.system(f'start cmd /k "python {clientpath}"')
+        os.system(f'start cmd /k "python {clientpath}"')
 
 
 def btn3():
-    os.system(f'start cmd /k "python {serverpath}"')
+    if school:
+        os.system(f'start C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe "C:\\ProgramData\\Miniconda3\\python.exe {serverpath}"')
+    else:
+        os.system(f'start powershell /k "python {serverpath}"')
 
 
 def btn4():
-    os.system(f'start cmd /k "python {clientpath}"')
-
+    if school:
+        os.system(f'start C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe "C:\\ProgramData\\Miniconda3\\python.exe {clientpath}"')
+    else:
+        os.system(f'start powershell /k "python {clientpath}"')
 
 main_menu()

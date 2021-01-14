@@ -9,8 +9,8 @@ import sessions.game as GAME_SESSION
 
 pygame.init()
 pygame.font.init()
-
-win = pygame.display.set_mode((1536, 864))
+infoObject = pygame.display.Info()
+win = pygame.display.set_mode((infoObject.current_w-100, infoObject.current_h-100))
 
 MAINMENU_SESSION.container(win)
 
