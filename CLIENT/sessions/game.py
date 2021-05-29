@@ -26,6 +26,7 @@ def container(win, DEBUG):
     myfont = pygame.font.SysFont('Comic Sans MS', 20)
 
     hostname = socket.gethostname()
+    #ipv4 = "192.168.1.41"
     ipv4 = socket.gethostbyname(hostname)
 
     def debug_overlay(Player, fps):
@@ -46,7 +47,10 @@ def container(win, DEBUG):
         # Players[0].update(win,Stages[0])
         # Players[1].update(win,Stages[0])
         for i in range(len(Players)):
-            # Players[i].update(win,Stages[0])
+            # Players[i].update(win,Stages[0])            
+            pname = myfont.render("TEXT", True, (0,255,0))
+            win.blit(pname, (Players[i].rect.x,Players[i].rect.y-Players[i].size-10))
+            pygame.draw.rect(win, (0,255,0), Players[i].rect)
             pygame.draw.rect(win, Players[i].color, Players[i].rect)
 
         for i in range(len(Stages[0])):
@@ -130,8 +134,9 @@ def container(win, DEBUG):
             redrawWin(id)
             n.send(NewUpdate)
             # print(f"{gettime()} : data sent-> {NewUpdate}")
-            clock.tick(60)
+            clock.tick(30)
 
         pygame.quit()
 
     main()
+

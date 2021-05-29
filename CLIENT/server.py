@@ -27,6 +27,7 @@ TransferBytes = 1024*2
 
 """-----------------"""
 hostname = socket.gethostname()
+#ipv4 = "192.168.1.41"
 ipv4 = socket.gethostbyname(hostname)  # recupers l'adresse IP local
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 

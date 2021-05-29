@@ -20,7 +20,7 @@ class Network:
             return False
 
     def send(self, data):
-        print(f"Sent data | {data}")
+        #print(f"Sent data | {data}")
         try:
             self.client.send(pickle.dumps(data))
         except socket.error as e:
