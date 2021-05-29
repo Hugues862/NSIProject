@@ -1,4 +1,5 @@
 import pygame
+import bullet as classBullet
 
 class Player(pygame.sprite.Sprite):
 
@@ -119,6 +120,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.y = self.screen_height-self.size
         
     def globalmove(self):
+
         self.rect.x += self.momentum[0]
         self.rect.y += self.momentum[1]
         """ print(self.momentum) """
@@ -270,3 +272,8 @@ class Player(pygame.sprite.Sprite):
 
         if self.status["poison"] == True:
             self.status["poison"] = False
+
+    def attack(self, mpos):
+
+        classBullet.bullet(self, self.rect.x, self.rect.y, mpos[0], mpos[1])
+    

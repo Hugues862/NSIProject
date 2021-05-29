@@ -99,6 +99,10 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
 
             if event.key == pygame.K_UP:
                 state["jump"] = False
+            
+            if event.key == pygame.MOUSEBUTTONDOWN:
+                pass # Shoot bullet
+            
         return state
 
     def gettime():
