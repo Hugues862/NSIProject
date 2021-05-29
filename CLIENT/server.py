@@ -24,6 +24,7 @@ console = Console()
 
 consoleStatus = True
 TransferBytes = 1024*2
+fps = 30
 
 """-----------------"""
 hostname = socket.gethostname()
@@ -145,7 +146,7 @@ def UpdatePlayerData(data, id):
 
 
 def UpdatePlayers(id):
-    players[id].update(Stages[0])
+    players[id].update(Stages[0], fps)
 
 
 def threaded_client(conn, id):
@@ -187,7 +188,7 @@ while True:
     #id = int(''.join(str(e) for e in [randint(0,9) for x in range(6)]))
     id = len(Users) + 0
     Users.append([addr, id])
-    players.append(classPlayers.Player(430, 250))
+    players.append(classPlayers.Player(430, 250, fps))
     thread = threading.Thread(
         group=None, target=threaded_client, name=f"Player{id}", args=(conn, id), kwargs={})
     thread.start()
