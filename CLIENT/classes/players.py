@@ -12,7 +12,8 @@ class Player(pygame.sprite.Sprite):
         self.m_right = False
         self.m_left = False
         self.run = True # Running default
-        (self.screen_width,self.screen_height) = (1536,864) 
+        (self.screen_width,self.screen_height) = (1536,864)
+        self.username = "Player1" 
 
         #game variables
         self.gravity_multiplier = 2.5

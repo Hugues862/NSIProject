@@ -48,10 +48,9 @@ def container(win, DEBUG):
         # Players[1].update(win,Stages[0])
         for i in range(len(Players)):
             # Players[i].update(win,Stages[0])            
-            pname = myfont.render("TEXT", True, (0,255,0))
-            win.blit(pname, (Players[i].rect.x,Players[i].rect.y-Players[i].size-10))
+            pname = myfont.render(Players[i].username, True, (255,255,255))
+            win.blit(pname, (Players[i].rect.midtop[0]-(myfont.size(Players[i].username)[0]//2), Players[i].rect.midtop[1]-Players[i].size))
             pygame.draw.rect(win, (0,255,0), Players[i].rect)
-            pygame.draw.rect(win, Players[i].color, Players[i].rect)
 
         for i in range(len(Stages[0])):
             pygame.draw.rect(win, Stages[0][i].color, Stages[0][i].rect)
@@ -134,7 +133,7 @@ def container(win, DEBUG):
             redrawWin(id)
             n.send(NewUpdate)
             # print(f"{gettime()} : data sent-> {NewUpdate}")
-            clock.tick(30)
+            clock.tick(60)
 
         pygame.quit()
 
