@@ -3,6 +3,7 @@ import pygame
 class Player(pygame.sprite.Sprite):
 
     def __init__(self, x, y, fps, vel=(1.5,1.5)):
+
         pygame.sprite.Sprite.__init__(self)
         (self.spx, self.spy) = vel
         self.color = (255,0,0)

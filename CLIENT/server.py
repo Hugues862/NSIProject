@@ -24,7 +24,7 @@ console = Console()
 
 consoleStatus = True
 TransferBytes = 1024*2
-fps = 30
+fps = 60
 
 """-----------------"""
 hostname = socket.gethostname()
