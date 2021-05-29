@@ -14,8 +14,12 @@ import classes.players as players
 import classes.platform as platform
 import stages as stages
 
+import sessions.mainmenu as MAINMENU_SESSION
 
-def container(win, DEBUG):
+
+hostname = socket.gethostname()
+
+def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)):
 
     clock = pygame.time.Clock()
 
@@ -25,9 +29,6 @@ def container(win, DEBUG):
 
     myfont = pygame.font.SysFont('Comic Sans MS', 20)
 
-    hostname = socket.gethostname()
-    #ipv4 = "192.168.1.41"
-    ipv4 = socket.gethostbyname(hostname)
 
     def debug_overlay(Player, fps):
         fps_text = str(fps)
@@ -109,33 +110,36 @@ def container(win, DEBUG):
         run = True
         print(ipv4)
         n = network.Network(ipv4, 1024*2)
-        n.connect()
+        if n.connect():
 
-        global Players, Stages
-        id = n.recv()
-        Stages = n.recv()
+            global Players, Stages
+            id = n.recv()
+            Stages = n.recv()
 
-        NewUpdate = {}
+            NewUpdate = {}
 
-        while run:
-            data = n.recv()
-            # print(f"{gettime()} : data recieved -> ")
-            Players = data
-            """Listening to the events """
-            for event in pygame.event.get():  # Get all events
-                if event.type == pygame.QUIT:  # QUIT event
-                    run = EventsFile.GameQuit()  # returns False
+            while run:
+                data = n.recv()
+                # print(f"{gettime()} : data recieved -> ")
+                Players = data
+                """Listening to the events """
+                for event in pygame.event.get():  # Get all events
+                    if event.type == pygame.QUIT:  # QUIT event
+                        run = EventsFile.GameQuit()  # returns False
 
-                # check all events, KEYUP | KEYDOWN
-                NewUpdate = eventCheck(event)
+                    # check all events, KEYUP | KEYDOWN
+                    NewUpdate = eventCheck(event)
 
-            # Updates game display, essential to refresh every frame
-            redrawWin(id)
-            n.send(NewUpdate)
-            # print(f"{gettime()} : data sent-> {NewUpdate}")
-            clock.tick(60)
+                # Updates game display, essential to refresh every frame
+                redrawWin(id)
+                n.send(NewUpdate)
+                # print(f"{gettime()} : data sent-> {NewUpdate}")
+                clock.tick(60)
+            pygame.quit()
+        else:
+            print("NON VALID IP")
+            MAINMENU_SESSION.container(win)
 
-        pygame.quit()
 
     main()
 

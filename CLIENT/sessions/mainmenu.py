@@ -1,20 +1,56 @@
 import pygame
+import pygame_menu
 import sys
 from pygame.locals import *
 
 import sessions.game as GAME_SESSION
 
 
-def container(win):
-    mainClock = pygame.time.Clock()
 
+
+
+
+def container(win):
+    global username
+    global ip
+    global RUN
+    username = "Player"
+    ip = "127.0.0.1"
+    RUN = True
+    def updateip(value):
+        global ip
+        ip = value
+
+    def updateusername(value):
+        global username
+        username = value
+    
+    mainClock = pygame.time.Clock()
+    
     # Initialise les modules pygame et autres
     pygame.init()
     pygame.display.set_caption('game base')
+    while RUN:
+        menu = pygame_menu.Menu(300, 400, 'Welcome',
+                        theme=pygame_menu.themes.THEME_DARK)
+        menu.add.text_input('', textinput_id="username", default=username, onchange=updateusername)
+        menu.add.text_input('', textinput_id="ip", default=ip, onchange=updateip)
+        
+        def start():
+            global RUN
+            print(ip, username)
+            RUN = False
+            if ip == '':
+                GAME_SESSION.container(win, DEBUG=True, username=username)
+            else:
+                GAME_SESSION.container(win, DEBUG=True, username=username, ipv4=ip)
+        
+        menu.add.button('START', start)
 
-    font = pygame.font.SysFont(None, 20)
+        menu.mainloop(win)
 
-    def draw_text(text, font, color, surface, x, y):
+
+    ''' def draw_text(text, font, color, surface, x, y):
         """
         Afiche le texte
         """
@@ -89,4 +125,4 @@ def container(win):
             pygame.display.update()
             mainClock.tick(60)
 
-    main_menu()
+    main_menu()'''

@@ -1,5 +1,7 @@
 import socket
 import pickle
+from multiprocessing import Process
+
 DEBUG = True
 
 
@@ -12,12 +14,13 @@ class Network:
         self.addr = (self.server, self.port)
 
     def connect(self):
-        try:
-            print(f"Recv connection from self.addr")
+        #try:
+            print(f"Connecting to {self.server}")
             self.client.connect(self.addr)
+            print(f"Connection successful")
             return True
-        except:
-            return False
+        #except:
+            #return False
 
     def send(self, data):
         #print(f"Sent data | {data}")
