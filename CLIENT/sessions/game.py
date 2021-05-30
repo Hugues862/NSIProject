@@ -71,7 +71,7 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
         """Current Event list"""
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:  # Shift Doesn't work
+            if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
                 state["run"] = False
 
             # Use of Directional keys
@@ -103,8 +103,8 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
             if event.key == pygame.K_UP:
                 state["jump"] = False
             
-            if event.key == pygame.MOUSEBUTTONDOWN:
-                state["m_click"] = True # Shoot bullet
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            state["m_click"] = True # Shoot bullet
             
         return state
 

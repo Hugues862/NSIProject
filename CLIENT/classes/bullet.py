@@ -7,9 +7,9 @@ class bullet(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         (self.spdx, self.spdy) = ((xf - xs)/(yf - ys), (yf - ys)/(xf - xs))
         self.color = player.color
-        self.rect = pygame.Rect(player.rect.x, player.rect.y, 3, 3)
+        self.rect = pygame.Rect(player.rect.x, player.rect.y, 10, 10)
         (self.xf, self.yf) = (xf, yf)
-        self.momentum = [10 * self.spdx, 10 * self.spdy]
+        self.momentum = [5 * self.spdx, 5 * self.spdy]
         self.damage = player.status["attackDamage"]
 
         self.own = player
