@@ -27,7 +27,7 @@ class bullet(pygame.sprite.Sprite):
         collide = pygame.sprite.spritecollide(self, players, False)
         for block in collide:
 
-            self.kill() # Destroy Bullet
+            # self.kill() # Destroy Bullet
             block.status["health"] -= self.damage
 
         # Check and see if we hit a platform
@@ -36,8 +36,8 @@ class bullet(pygame.sprite.Sprite):
         for block in block_hit_list:
 
             # Kills the bullet if Touches a platform
-
-            self.kill()
+            pass
+            #self.kill()
 
     def globalmove(self):
 
