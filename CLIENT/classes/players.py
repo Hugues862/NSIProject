@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
         (self.screen_width,self.screen_height) = (1536,864)
         self.username = "Player" 
         self.bullets = []
-        
+
         #game variables
         self.gravity_multiplier = 2.5
         self.jump_momentum = 50
@@ -92,6 +92,8 @@ class Player(pygame.sprite.Sprite):
             self.m_left = val
         if att == 'run':
             self.run = val
+        if att == 'm_click':
+            self.m_click = val
 
     def CollisionCheck(self,Platforms):
         """

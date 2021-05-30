@@ -32,7 +32,7 @@ hostname = socket.gethostname()
 ipv4 = socket.gethostbyname(hostname)  # recupers l'adresse IP local
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-server = ipv4
+server = ''
 port = 5555
 playerConn = [[["undef"], ["undef"]], [["undef"], ["undef"]]]
 disconnect = [True, True]
