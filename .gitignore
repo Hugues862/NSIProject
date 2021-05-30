@@ -1,5 +1,3 @@
 .vscode
-launch.json
 *.pyc
 HP/classes/__pycache__/players.cpython-38.pyc
-.vscode/launch.json
