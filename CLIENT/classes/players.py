@@ -80,10 +80,12 @@ class Player(pygame.sprite.Sprite):
         self.CollisionCheck(Platforms)
         self.corrections()
 
+        print(self.bullets)
+
         for b in self.bullets:
             b.update(Platforms, players)
         
-        """ print(self.run) """
+        # print(self.run)
     
     def setAttribute(self,att,val):
         if att == 'm_right':

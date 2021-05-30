@@ -72,7 +72,7 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
         """Current Event list"""
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:  # Shift Doesn't work
+            if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
                 state["run"] = False
 
             # Use of Directional keys
