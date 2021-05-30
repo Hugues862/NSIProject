@@ -52,6 +52,7 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
             pname = myfont.render(Players[i].username, True, (255,255,255))
             win.blit(pname, (Players[i].rect.midtop[0]-(myfont.size(Players[i].username)[0]//2), Players[i].rect.midtop[1]-Players[i].size))
             pygame.draw.rect(win, (0,255,0), Players[i].rect)
+            print(Players[i].bullets)
             for j in range(len(Players[i].bullets)):
                 pygame.draw.rect(win, (255,0,0), Players[i].bullets[j].rect)
         

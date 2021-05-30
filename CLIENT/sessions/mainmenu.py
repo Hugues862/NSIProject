@@ -1,4 +1,5 @@
 import pygame
+import socket
 import pygame_menu
 import sys
 from pygame.locals import *
@@ -15,7 +16,8 @@ def container(win):
     global ip
     global RUN
     username = "Player"
-    ip = "127.0.0.1"
+    hostname = socket.gethostname()
+    ip = socket.gethostbyname(hostname)  # recupers l'adresse IP local
     RUN = True
     def updateip(value):
         global ip
