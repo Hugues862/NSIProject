@@ -64,7 +64,8 @@ class Player(pygame.sprite.Sprite):
     
         self.movex()
 
-        self.attack(pygame.mouse.get_pos)
+        if self.m_click:
+            self.attack(pygame.mouse.get_pos)
 
         self.checkStatus(fps)
         
@@ -79,7 +80,7 @@ class Player(pygame.sprite.Sprite):
         self.corrections()
 
         for b in self.bullets:
-            b.update(Platforms,)
+            b.update(Platforms, players)
         
         """ print(self.run) """
     
@@ -215,13 +216,12 @@ class Player(pygame.sprite.Sprite):
         else:
             self.momentum[0] = 0
 
-    
     def checkStatus(self, fps):
 
         if self.status["health"] <= 0:
             # Kill player
             pygame.quit()
-            exit()
+            sys.exit()
         
         if self.status["stun"] == True:
 
