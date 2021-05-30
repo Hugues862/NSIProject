@@ -15,7 +15,7 @@
             "name": "Client",
             "type": "python",
             "request": "launch",
-            "program": "/CLIENT/client.py",
+            "program": "./CLIENT/client.py",
             "console": "integratedTerminal"
         }
     ]
