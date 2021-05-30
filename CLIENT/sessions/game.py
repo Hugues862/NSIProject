@@ -11,6 +11,7 @@ import classes.network as network
 
 import classes.EventsFile as EventsFile
 import classes.players as players
+import classes.bullet as bullet
 import classes.platform as platform
 import stages as stages
 
@@ -44,6 +45,7 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
         win.blit(momentum, (10, 45))
 
     def redrawWin(id):
+        
         win.fill((0, 0, 0))  # Clears screen every frame and Draw Players
         # Players[0].update(win,Stages[0])
         # Players[1].update(win,Stages[0])
@@ -55,6 +57,8 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
             """ for j in range(len(Players[i].bullets)):
                 pygame.draw.rect(win, (255,0,0), Players[i].bullets[j].rect) """
         
+        for i in range(len(DATA["bullets"])):
+            pygame.draw.rect(win, (255,255,0), DATA["bullets"][i].rect)
 
         for i in range(len(Stages[0])):
             pygame.draw.rect(win, Stages[0][i].color, Stages[0][i].rect)
@@ -67,7 +71,7 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
 
     state = {}
 
-    def eventCheck(event):
+    def eventCheck(event, id):
         """Current Event list"""
 
         if event.type == pygame.KEYDOWN:
@@ -104,7 +108,8 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
                 state["jump"] = False
             
             if event.key == pygame.K_SPACE:
-                state["m_click"] = True # Shoot bullet
+                mouseX, mouseY = pygame.mouse.get_pos()
+                DATA["bullets"].append(bullet.bullet(DATA["players"][id],DATA["players"][id].rect.x, DATA["players"][id].rect.y, mouseX, mouseY))
             
         return state
 
@@ -129,7 +134,7 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
                         run = EventsFile.GameQuit()  # returns False
 
                     # check all events, KEYUP | KEYDOWN
-                    NewUpdate = eventCheck(event)
+                    NewUpdate = eventCheck(event, id)
 
                 # Updates game display, essential to refresh every frame
                 redrawWin(id)

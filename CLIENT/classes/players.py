@@ -1,6 +1,5 @@
 import pygame
 import sys
-import classes.bullet as classBullet
 
 class Player(pygame.sprite.Sprite):
 
