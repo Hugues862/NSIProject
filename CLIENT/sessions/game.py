@@ -47,13 +47,13 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
         win.fill((0, 0, 0))  # Clears screen every frame and Draw Players
         # Players[0].update(win,Stages[0])
         # Players[1].update(win,Stages[0])
-        for i in range(len(Players)):
+        for i in range(len(DATA["players"])):
             # Players[i].update(win,Stages[0])            
-            pname = myfont.render(Players[i].username, True, (255,255,255))
-            win.blit(pname, (Players[i].rect.midtop[0]-(myfont.size(Players[i].username)[0]//2), Players[i].rect.midtop[1]-Players[i].size))
-            pygame.draw.rect(win, (0,255,0), Players[i].rect)
-            for j in range(len(Players[i].bullets)):
-                pygame.draw.rect(win, (255,0,0), Players[i].bullets[j].rect)
+            pname = myfont.render(DATA["players"][i].username, True, (255,255,255))
+            win.blit(pname, (DATA["players"][i].rect.midtop[0]-(myfont.size(DATA["players"][i].username)[0]//2), DATA["players"][i].rect.midtop[1]-DATA["players"][i].size))
+            pygame.draw.rect(win, (0,255,0), DATA["players"][i].rect)
+            """ for j in range(len(Players[i].bullets)):
+                pygame.draw.rect(win, (255,0,0), Players[i].bullets[j].rect) """
         
 
         for i in range(len(Stages[0])):
@@ -61,7 +61,7 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
 
         if DEBUG:
             fps = int(round(clock.get_fps(), 0))
-            debug_overlay(Players[id], fps)
+            debug_overlay(DATA["players"][id], fps)
 
         pygame.display.update()
 
@@ -108,27 +108,21 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
             
         return state
 
-    def gettime():
-        dt = datetime.datetime.now()
-        ms = str(dt.microsecond)
-        return dt.strftime("%H:%M:%S:") + ms[2:]
-
     def main():
         run = True
         print(ipv4)
         n = network.Network(ipv4, 1024*10)
         if n.connect():
 
-            global Players, Stages
+            global DATA, Stages
             id = n.recv()
             Stages = n.recv()
 
             NewUpdate = {}
 
             while run:
-                data = n.recv()
+                DATA = n.recv()
                 # print(f"{gettime()} : data recieved -> ")
-                Players = data
                 """Listening to the events """
                 for event in pygame.event.get():  # Get all events
                     if event.type == pygame.QUIT:  # QUIT event

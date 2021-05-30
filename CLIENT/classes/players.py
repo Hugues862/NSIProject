@@ -17,7 +17,6 @@ class Player(pygame.sprite.Sprite):
         self.run = True # Running default
         (self.screen_width,self.screen_height) = (1536,864)
         self.username = "Player" 
-        self.bullets = []
 
         #game variables
         self.gravity_multiplier = 2.5
@@ -55,21 +54,14 @@ class Player(pygame.sprite.Sprite):
             "slowSpd" : (0.75, 0.75)
         }
 
-        self.m_click = False
-        
 
 
-    def update(self, Platforms, fps, players):
+    def update(self, Platforms, fps):
     
         self.globalmove()
     
         self.movex()
 
-        if self.m_click:
-            try:
-                self.attack(pygame.mouse.get_pos)
-            except:
-                raise Exception
 
         self.checkStatus(fps)
         
@@ -83,11 +75,7 @@ class Player(pygame.sprite.Sprite):
         self.CollisionCheck(Platforms)
         self.corrections()
 
-        print(self.bullets)
 
-        for b in self.bullets:
-            b.update(Platforms, players)
-        
         # print(self.run)
     
     def setAttribute(self,att,val):
@@ -97,8 +85,7 @@ class Player(pygame.sprite.Sprite):
             self.m_left = val
         if att == 'run':
             self.run = val
-        if att == 'm_click':
-            self.m_click = val
+    
 
     def CollisionCheck(self,Platforms):
         """
@@ -295,8 +282,4 @@ class Player(pygame.sprite.Sprite):
         if self.status["poison"] == True:
             self.status["poison"] = False
 
-    def attack(self, mpos):
-        print(self.rect.x, self.rect.y, mpos[0], mpos[1])
-        if len(self.bullets) < 4:
-            self.bullets.append(classBullet.bullet(self, self.rect.x, self.rect.y, mpos[0], mpos[1]))
-        self.m_click = False
+   

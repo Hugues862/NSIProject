@@ -47,8 +47,10 @@ except socket.error as e:
 
 s.listen()
 
-
-players = []
+DATA = {
+    "players": [],
+    "bullets": []
+}
 Stages = stages.initStages()
 
 
@@ -59,40 +61,14 @@ def printConsole():
     table.add_column("IP")
     table.add_column('PORT')
     table.add_row("Server", ipv4, str(port))
-    for i in range(len(players)):
+    for i in range(len(DATA["players"])):
         try:
             table.add_row(f"Player {i}", str(
                 Users[i][0][0]), str(Users[i][0][1]))
         except:
             pass
     console.print(table)
-    """ 
-    if disconnect[0]:
-        ip1 = None
-        port1 = None
-    else:
-        ip1 = str(playerConn[0][0])
-        port1 = str(playerConn[0][1])
-
-    if disconnect[1]:
-        ip2 = None
-        port2 = None
-    else:
-        ip2 = str(playerConn[1][0])
-        port2 = str(playerConn[1][1])
-
-    table.add_row(
-        "IP", str(server),ip1,ip2
-    )
-    table.add_row(
-        "PORT", str(port),port1,port2
-    )
-    postxt1 = str(players[0].rect.x)+" : "+str(players[0].rect.y)
-    postxt2 = str(players[1].rect.x)+" : "+str(players[1].rect.y)
-    table.add_row(
-        "POS", " ",postxt1,postxt2
-    ) """
-
+    
 
 def clear():
 
@@ -132,21 +108,21 @@ Users = []
 
 def UpdatePlayerData(data, id):
     for name in data:
-        global players
+        global DATA
         if name == 'jump' and data[name] == True:
 
-            if players[id].status["sleep"] == True:
-                players[id].status["sleepSpam"] += 1
+            if DATA["players"][id].status["sleep"] == True:
+                DATA["players"][id].status["sleepSpam"] += 1
 
             else:
-                players[id].jump()
+                DATA["players"][id].jump()
 
         else:
-            players[id].setAttribute(name, data[name])
+            DATA["players"][id].setAttribute(name, data[name])
 
 
 def UpdatePlayers(id):
-    players[id].update(Stages[0], fps, players)
+    DATA["players"][id].update(Stages[0], fps)
 
 
 def threaded_client(conn, id):
@@ -154,13 +130,13 @@ def threaded_client(conn, id):
 
     conn.send(pickle.dumps(id))
     conn.send(pickle.dumps(Stages))
-    global players
+    global DATA
 
     # main connection loop
     while True:
         try:
             #print(f"{gettime()} : data sent -> {players}")
-            conn.send(pickle.dumps(players))
+            conn.send(pickle.dumps(DATA))
             data = pickle.loads(conn.recv(TransferBytes))
             #print(f"{gettime()} : data recieved -> {data}")
             UpdatePlayerData(data, id)
@@ -170,7 +146,7 @@ def threaded_client(conn, id):
 
     # connection ends
     Users[id] == None
-    players[id] == None
+    DATA["players"][id] == None
     conn.close()
 
 
@@ -188,7 +164,7 @@ while True:
     #id = int(''.join(str(e) for e in [randint(0,9) for x in range(6)]))
     id = len(Users) + 0
     Users.append([addr, id])
-    players.append(classPlayers.Player(430, 250, fps))
+    DATA["players"].append(classPlayers.Player(430, 250, fps))
     thread = threading.Thread(
         group=None, target=threaded_client, name=f"Player{id}", args=(conn, id), kwargs={})
     thread.start()
