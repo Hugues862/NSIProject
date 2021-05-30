@@ -146,7 +146,7 @@ def UpdatePlayerData(data, id):
 
 
 def UpdatePlayers(id):
-    players[id].update(Stages[0], fps)
+    players[id].update(Stages[0], fps, players)
 
 
 def threaded_client(conn, id):

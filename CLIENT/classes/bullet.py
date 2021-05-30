@@ -14,29 +14,30 @@ class bullet():
 
         self.own = player
 
-    def update(self, Platforms):
+    def update(self, Platforms, players):
 
         self.globalmove()
 
-        self.CollisionCheck(Platforms)
+        self.CollisionCheck(Platforms, players)
 
     def CollisionCheck(self, Platforms, players): # Need Hugues to check what is block hit list
 
         # Check if we hit a player
 
         collide = pygame.sprite.spritecollide(self, players, False)
+        for block in collide:
 
-        # Check and see if we hit anything
+            self.kill() # Destroy Bullet
+            block.status["health"] -= self.damage
+
+        # Check and see if we hit a platform
 
         block_hit_list = pygame.sprite.spritecollide(self, Platforms, False)
         for block in block_hit_list:
 
-            # Reset our position based on the top/bottom of the object.
+            # Kills the bullet if Touches a platform
 
-            if self.momentum[1] > 0:
-                self.rect.bottom = block.rect.top
-            elif self.momentum[1] < 0:
-                self.rect.top = block.rect.bottom
+            self.kill()
 
     def globalmove(self):
 

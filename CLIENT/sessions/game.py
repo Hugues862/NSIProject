@@ -101,7 +101,7 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
                 state["jump"] = False
             
             if event.key == pygame.MOUSEBUTTONDOWN:
-                pass # Shoot bullet
+                state["m_click"] = True # Shoot bullet
             
         return state
 

@@ -1,5 +1,6 @@
 import pygame
-import bullet as classBullet
+import sys
+import classes.bullet as classBullet
 
 class Player(pygame.sprite.Sprite):
 
@@ -53,12 +54,17 @@ class Player(pygame.sprite.Sprite):
             "slowSpd" : (0.75, 0.75)
         }
 
+        self.m_click = False
+        self.bullets = []
 
-    def update(self, Platforms, fps):
+
+    def update(self, Platforms, fps, players):
     
         self.globalmove()
     
         self.movex()
+
+        self.attack(pygame.mouse.get_pos)
 
         self.checkStatus(fps)
         
@@ -71,6 +77,9 @@ class Player(pygame.sprite.Sprite):
 
         self.CollisionCheck(Platforms)
         self.corrections()
+
+        for b in self.bullets:
+            b.update(Platforms,)
         
         """ print(self.run) """
     
@@ -208,6 +217,11 @@ class Player(pygame.sprite.Sprite):
 
     
     def checkStatus(self, fps):
+
+        if self.status["health"] <= 0:
+            # Kill player
+            pygame.quit()
+            exit()
         
         if self.status["stun"] == True:
 
@@ -275,5 +289,6 @@ class Player(pygame.sprite.Sprite):
 
     def attack(self, mpos):
 
-        classBullet.bullet(self, self.rect.x, self.rect.y, mpos[0], mpos[1])
-    
+        if len(self.bullets) < 4:
+            self.bullets.append(classBullet.bullet(self, self.rect.x, self.rect.y, mpos[0], mpos[1]))
+        self.m_click = False
