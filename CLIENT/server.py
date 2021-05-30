@@ -23,7 +23,7 @@ console = Console()
 """     Variables   """
 
 consoleStatus = True
-TransferBytes = 1024*3
+TransferBytes = 1024*10
 fps = 60
 
 """-----------------"""
@@ -32,8 +32,8 @@ hostname = socket.gethostname()
 ipv4 = socket.gethostbyname(hostname)  # recupers l'adresse IP local
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-server = ''
-port = 5555
+server = ipv4
+port = 55556
 playerConn = [[["undef"], ["undef"]], [["undef"], ["undef"]]]
 disconnect = [True, True]
 

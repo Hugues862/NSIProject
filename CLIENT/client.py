@@ -11,7 +11,7 @@ import sessions.game as GAME_SESSION
 
 pygame.init()
 pygame.font.init()
-win = pygame.display.set_mode((1536,864))
+win = pygame.display.set_mode((1536//2,864//2))
 
 MAINMENU_SESSION.container(win)
 

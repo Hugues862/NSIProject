@@ -66,7 +66,10 @@ class Player(pygame.sprite.Sprite):
         self.movex()
 
         if self.m_click:
-            self.attack(pygame.mouse.get_pos)
+            try:
+                self.attack(pygame.mouse.get_pos)
+            except:
+                raise Exception
 
         self.checkStatus(fps)
         
@@ -293,7 +296,7 @@ class Player(pygame.sprite.Sprite):
             self.status["poison"] = False
 
     def attack(self, mpos):
-
+        print(self.rect.x, self.rect.y, mpos[0], mpos[1])
         if len(self.bullets) < 4:
             self.bullets.append(classBullet.bullet(self, self.rect.x, self.rect.y, mpos[0], mpos[1]))
         self.m_click = False

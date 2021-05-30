@@ -9,7 +9,7 @@ class Network:
     def __init__(self, ip, TB):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server = ip
-        self.port = 5555
+        self.port = 55556
         self.TransferBytes = TB
         self.addr = (self.server, self.port)
 
@@ -37,6 +37,7 @@ class Network:
             send = ''
 
             send = pickle.loads(temp)
+
             return send
         except socket.error as e:
             print(e)

@@ -52,7 +52,6 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
             pname = myfont.render(Players[i].username, True, (255,255,255))
             win.blit(pname, (Players[i].rect.midtop[0]-(myfont.size(Players[i].username)[0]//2), Players[i].rect.midtop[1]-Players[i].size))
             pygame.draw.rect(win, (0,255,0), Players[i].rect)
-            print(Players[i].m_click)
             for j in range(len(Players[i].bullets)):
                 pygame.draw.rect(win, (255,0,0), Players[i].bullets[j].rect)
         
@@ -117,7 +116,7 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
     def main():
         run = True
         print(ipv4)
-        n = network.Network(ipv4, 1024*3)
+        n = network.Network(ipv4, 1024*10)
         if n.connect():
 
             global Players, Stages
@@ -140,6 +139,7 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
 
                 # Updates game display, essential to refresh every frame
                 redrawWin(id)
+                #print(NewUpdate)
                 n.send(NewUpdate)
                 # print(f"{gettime()} : data sent-> {NewUpdate}")
                 clock.tick(60)
