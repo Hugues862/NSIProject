@@ -23,7 +23,7 @@ console = Console()
 """     Variables   """
 
 consoleStatus = True
-TransferBytes = 1024*2
+TransferBytes = 1024*3
 fps = 60
 
 """-----------------"""

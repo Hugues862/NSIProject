@@ -113,7 +113,7 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
     def main():
         run = True
         print(ipv4)
-        n = network.Network(ipv4, 1024*2)
+        n = network.Network(ipv4, 1024*3)
         if n.connect():
 
             global Players, Stages

@@ -1,6 +1,6 @@
 import pygame
 
-class bullet():
+class bullet(pygame.sprite.Sprite):
 
     def __init__(self, player, xs, ys, xf, yf):
 

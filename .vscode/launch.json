@@ -15,7 +15,7 @@
             "name": "Client",
             "type": "python",
             "request": "launch",
-            "program": "/Users/hpstock/Documents/Code/NSI/NSIProject/CLIENT/client.py",
+            "program": "C:/Users/yoann/Desktop/Reposit/NSIProject/CLIENT/client.py",
             "console": "integratedTerminal"
         }
     ]
