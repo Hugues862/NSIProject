@@ -125,6 +125,9 @@ def UpdatePlayerData(data, id):
 def UpdatePlayers(id):
     DATA["players"][id].update(Stages[0], fps)
 
+def UpdateBullets(i):
+    DATA["bullets"][i].update(Stages[0],DATA["players"])
+
 
 def threaded_client(conn, id):
     # Connection started
@@ -142,6 +145,8 @@ def threaded_client(conn, id):
             #print(f"{gettime()} : data recieved -> {data}")
             UpdatePlayerData(DATA["state"], id)
             UpdatePlayers(id)
+            for i in range(len(DATA["bullets"])):
+                UpdateBullets(i)
         except:
             break
 
