@@ -7,11 +7,13 @@ from pygame.locals import *
 import sessions.game as GAME_SESSION
 
 
-
+DEBUG = True
 
 
 
 def container(win):
+    
+
     global username
     global ip
     global RUN
@@ -37,7 +39,7 @@ def container(win):
                         theme=pygame_menu.themes.THEME_DARK)
         menu.add.text_input('', textinput_id="username", default=username, onchange=updateusername)
         menu.add.text_input('', textinput_id="ip", default=ip, onchange=updateip)
-        
+
         def start():
             global RUN
             print(ip, username)
@@ -47,9 +49,15 @@ def container(win):
             else:
                 GAME_SESSION.container(win, DEBUG=True, username=username, ipv4=ip)
         
-        menu.add.button('START', start)
 
+        
+        if DEBUG:
+            menu.add.button('START', start())
+        else:
+            menu.add.button('START', start)
         menu.mainloop(win)
+
+
 
 
     ''' def draw_text(text, font, color, surface, x, y):

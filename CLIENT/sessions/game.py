@@ -138,8 +138,9 @@ def container(win, DEBUG, username="Player", ipv4=socket.gethostbyname(hostname)
 
                 # Updates game display, essential to refresh every frame
                 redrawWin(id)
-                #print(NewUpdate)
-                n.send(NewUpdate)
+                DATA["state"] = NewUpdate
+                print(DATA)
+                n.send(DATA)
                 # print(f"{gettime()} : data sent-> {NewUpdate}")
                 clock.tick(60)
             pygame.quit()

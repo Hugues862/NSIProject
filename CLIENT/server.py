@@ -49,7 +49,8 @@ s.listen()
 
 DATA = {
     "players": [],
-    "bullets": []
+    "bullets": [],
+    "state": {}
 }
 Stages = stages.initStages()
 
@@ -137,9 +138,9 @@ def threaded_client(conn, id):
         try:
             #print(f"{gettime()} : data sent -> {players}")
             conn.send(pickle.dumps(DATA))
-            data = pickle.loads(conn.recv(TransferBytes))
+            DATA = pickle.loads(conn.recv(TransferBytes))
             #print(f"{gettime()} : data recieved -> {data}")
-            UpdatePlayerData(data, id)
+            UpdatePlayerData(DATA["state"], id)
             UpdatePlayers(id)
         except:
             break
